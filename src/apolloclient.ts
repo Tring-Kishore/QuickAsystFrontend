@@ -1,12 +1,26 @@
-import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, from } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+
+
+const getAccessToken = ()=> {
+  const keys = Object.keys(localStorage);
+  const tokenKey = keys.find((key) => key.endsWith(".idToken"));
+  
+  if (tokenKey) {
+    const tokenValue = localStorage.getItem(tokenKey);
+    return tokenValue;
+  }
+  
+  console.log('No access token found in localStorage');
+  return null;
+};
 
 const httpLink = createHttpLink({
   uri: process.env.REACT_APP_API_URL,
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('idToken');
+  const token = getAccessToken();
   
   return {
     headers: {
@@ -17,7 +31,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([authLink,httpLink]),
   cache: new InMemoryCache()
 });
 
