@@ -87,7 +87,7 @@ const SignIn = () => {
 
       <div className="content-signin">
         <div className="signin-logo">
-          <img src={SignInLogo} />
+          <img src={SignInLogo} alt="signin logo" />
         </div>
         <div className="signin-content">
           <p className="signin-content-heading">

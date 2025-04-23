@@ -4,7 +4,7 @@ import eyeCloseIcon from '../../asserts/Sharp.svg';
 import eyeOpenIcon from '../../asserts/eye.svg';
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  error?: boolean; // Add error prop
+  error?: boolean; 
 }
 
 const InputField: React.FC<InputFieldProps> = (props) => {
@@ -22,7 +22,7 @@ const InputField: React.FC<InputFieldProps> = (props) => {
     <div className="input-container">
       <input
         {...props}
-        className={`${props.className} ${props.error ? 'error' : ''}`} // Add error class if error prop is true
+        className={`${props.className} ${props.error ? 'error' : ''}`}
         type={inputType}
       />
       {props.name === 'password' && (

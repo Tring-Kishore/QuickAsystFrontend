@@ -33,7 +33,6 @@
 
 @media screen and (max-width: 768px) {
     .input-container{
-        // width: 624px!important;
         input::placeholder{
             color:#B9BDC6;
             font-family: Glegoo;
@@ -42,9 +41,6 @@
         line-height: 21px;
 
         vertical-align: middle;
-        }
-        input{
-            // width: 588px!important;
         }
     }
 }
