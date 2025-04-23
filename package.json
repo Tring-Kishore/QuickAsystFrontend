@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/client": "^3.13.8",
+    "@aws-amplify/auth": "^6.12.3",
     "@aws-amplify/ui-react": "^6.11.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",

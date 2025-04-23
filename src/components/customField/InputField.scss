@@ -1,0 +1,56 @@
+.input-container{
+        width: 100%;
+        height: 52px;
+    input{
+        width: 93%;
+        height: 52px;
+        padding-right: 12px;
+        padding-left: 12px;
+        border: 1px solid #E3E5E8;
+        outline: none;
+    }
+    input::placeholder{
+        color:#B9BDC6;
+        font-family: Glegoo;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 21px;
+        vertical-align: middle;
+    }
+    input.error {
+        border: 1px solid red;
+      }
+      
+    .password-toggle{
+        background: none;
+        border: none;
+        position: relative;
+        left: 88%;
+        bottom: 40px;
+    
+     }
+}
+
+@media screen and (max-width: 768px) {
+    .input-container{
+        input::placeholder{
+            color:#B9BDC6;
+            font-family: Glegoo;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 21px;
+
+        vertical-align: middle;
+        }
+    }
+}
+
+
+@media screen and (max-width: 376px) {
+    .input-container{
+        width: 100%!important;
+        input{
+            width: 93%!important;
+        }
+    }
+}
