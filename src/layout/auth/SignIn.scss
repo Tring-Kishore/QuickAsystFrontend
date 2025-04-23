@@ -38,7 +38,7 @@
                 flex-direction: column;
                 align-items: flex-start;
                 .textin-small-para p {
-                    font-family: 'Playfair Display';
+                    font-family: 'Playfair Display',serif;
                     font-weight: 400;
                     font-size: 20px;
                     line-height: 100%;
@@ -46,7 +46,7 @@
                 }
         
                 .textin-big-para p {
-                    font-family: 'Playfair Display';
+                    font-family: 'Playfair Display',serif;
                     font-weight: 600;
                     font-size: 33px;
                     line-height: 56px;
@@ -68,7 +68,7 @@
             .signin-content{
                 width: 100%;
                 .signin-content-heading{
-                    font-family: Playfair Display;
+                    font-family: Playfair Display,serif;
                     font-weight: 700;
                     font-size: 28px;
                     line-height: 100%;
@@ -76,7 +76,7 @@
                     margin-bottom: 1px;
                 }
                 .signin-content-para{
-                    font-family: Glegoo;
+                    font-family: Glegoo,serif;
                     font-weight: 400;
                     font-size: 16px;
                     line-height: 24px;
@@ -92,7 +92,7 @@
             label{
                 
                 padding-bottom: 6px;
-                font-family: Glegoo;
+                font-family: Glegoo,serif;
                 font-weight: 400;
                 font-size: 14px;
                 line-height: 21px;
@@ -108,7 +108,7 @@
             padding-bottom: 14px;
         }
         .error-message{
-            font-family: Glegoo;
+            font-family: Glegoo,serif;
             font-weight: 400;
             font-size: 12px;
             line-height: 19px;
@@ -118,7 +118,7 @@
         .forget-password{
             width: 98%;
             .forget-password-text{
-                font-family: Glegoo;
+                font-family: Glegoo,serif;
                 font-weight: 400;
                 font-size: 14px;
                 line-height: 21px;
@@ -137,7 +137,7 @@
             padding-bottom: 15px;
             padding-left: 80px;
             background-color: #5D75F8;
-            font-family: Glegoo;
+            font-family: Glegoo,serif;
             font-weight: 700;
             font-size: 16px;
             line-height: 22px;

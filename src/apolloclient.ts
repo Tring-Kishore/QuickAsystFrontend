@@ -7,11 +7,10 @@ const getAccessToken = ()=> {
   const tokenKey = keys.find((key) => key.endsWith(".idToken"));
   
   if (tokenKey) {
-    const tokenValue = localStorage.getItem(tokenKey);
-    return tokenValue;
+    return localStorage.getItem(tokenKey);
   }
   
-  console.log('No access token found in localStorage');
+  
   return null;
 };
 
