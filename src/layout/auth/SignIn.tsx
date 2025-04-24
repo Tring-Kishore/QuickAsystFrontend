@@ -1,6 +1,6 @@
 import InputField from "../../components/customField/InputField";
 import { useForm } from "react-hook-form";
-import SignInLogo from "../../asserts/Quickasystlogo.svg";
+import SignInLogo from "../../assets/images/Quickasystlogo.svg";
 import { signIn } from "@aws-amplify/auth";
 import "./SignIn.scss";
 import { useNavigate } from "react-router-dom";

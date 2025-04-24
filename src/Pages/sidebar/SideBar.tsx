@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './SideBar.scss';
-import logo from '../../asserts/sidebar-logo.png';
-import dashboardlogo from '../../asserts/Dashboard.svg';
-import ticketlogo from '../../asserts/Ticket.svg';
-import sidebarsmalllogo from '../../asserts/QuickAsystLogosidebar.svg'
+import logo from '../../assets/images/sidebar-logo.png';
+import dashboardlogo from '../../assets/images/Dashboard.svg';
+import ticketlogo from '../../assets/images/Ticket.svg';
+import sidebarsmalllogo from '../../assets/images/QuickAsystLogosidebar.svg'
 import { useLocation, useNavigate } from 'react-router-dom';
 interface SidebarItem {
   id: string;
