@@ -5,11 +5,12 @@ import eyeOpenIcon from '../../assets/images/eye.svg';
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean; 
+  containerClassName?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = (props) => {
   const [showPassword, setShowPassword] = useState(false);
-
+  const { containerClassName, ...inputProps } = props;
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -19,7 +20,7 @@ const InputField: React.FC<InputFieldProps> = (props) => {
     : props.type;
 
   return (
-    <div className="input-container">
+    <div className={`input-container ${containerClassName || ''}`}>
       <input
         {...props}
         className={`${props.className} ${props.error ? 'error' : ''}`}

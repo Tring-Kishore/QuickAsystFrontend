@@ -1,0 +1,16 @@
+.custom-tabs {
+    .MuiTabs-indicator.custom-tab-indicator {
+      background-color: #5D75F8;
+    }
+  
+    .MuiTab-root {
+      color: #333;
+      font-weight: 500;
+      text-transform: none;
+  
+      &.Mui-selected {
+        color: #5D75F8;
+      }
+    }
+  }
+  
