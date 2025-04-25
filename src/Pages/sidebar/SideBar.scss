@@ -1,0 +1,130 @@
+.sidepanel {
+    height: 100%;
+    width: 80px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+  
+    
+  
+    a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: #818181;
+      display: block;
+      transition: 0.3s;
+  
+      &:hover {
+        color: #f1f1f1;
+      }
+    }
+    .sidebar-logo{
+        width: 100%;
+        height: 72px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #47556940;
+    }
+    .sidebar-list{
+        display: flex;
+        flex-direction: column;
+        .sidebar-options{
+            width: 100%;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            justify-content: center;
+            cursor: pointer;
+            // border-left: 4px solid transparent;
+            .sidebar-option-logo{
+                width:32%;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .sidebar-option-text{
+                width: 50%;
+                height: 100%;
+                font-family: Glegoo,serif;
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 21px;
+                vertical-align: middle;
+                color: #9CA3AF;
+                display: flex;
+                
+                align-items: center;
+
+                p{
+                    margin: 0;
+                }
+            }
+        }
+    }
+
+    .toggle{
+        position: relative;
+        .toggle-btn{
+            position: absolute;
+            left: 66px;
+            bottom: 57px;
+            border-radius: 50%;
+            font-weight: bolder;
+            height: 20px;
+            background-color: #f9f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: left 0.5s ease;
+        }
+      }
+
+      &.open {
+        width: 234px;
+        .toggle-btn{
+          left: 220px;
+        }
+      }
+
+
+  
+    .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+      background: none;
+      border: none;
+      color: #818181;
+      cursor: pointer;
+      &:hover {
+        color: #f1f1f1;
+      }
+    }
+  }
+  
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  
+    &:hover {
+      background-color: #444;
+    }
+    
+    
+}

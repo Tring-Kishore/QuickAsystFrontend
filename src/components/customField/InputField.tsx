@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './InputField.scss';
-import eyeCloseIcon from '../../asserts/Sharp.svg';
-import eyeOpenIcon from '../../asserts/eye.svg';
+import eyeCloseIcon from '../../assets/images/eyeclose.svg';
+import eyeOpenIcon from '../../assets/images/eye.svg';
 
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean; 

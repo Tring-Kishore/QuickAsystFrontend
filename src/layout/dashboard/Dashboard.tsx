@@ -1,18 +1,17 @@
-import React from 'react'
-import Content from '../../Pages/content/Content'
-import SideBar from '../../Pages/sidebar/SideBar'
+import React from 'react';
+import SideBar from '../../Pages/sidebar/SideBar';
+import { Outlet } from 'react-router-dom';
+import './Dashboard.scss';
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   return (
-    <div>
-        <div>
-            <SideBar/>
-        </div>
-        <div>
-            <Content/>
-        </div>
+    <div className='outer-class-dashboard'>
+    <SideBar/>
+    <div className='content-dashboard'>
+      <Outlet />
     </div>
-  )
-}
+  </div>
+  );
+};
 
-export default Dashboard
+export default Dashboard;
