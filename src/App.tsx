@@ -5,6 +5,7 @@ import SignIn from './layout/auth/SignIn';
 import Dashboard from './layout/dashboard/Dashboard';
 import Tickets from './Pages/tickets/Tickets';
 import Content from './Pages/content/Content';
+import Account from './Pages/account/Account';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}>
             <Route index element={<Content />} />
             <Route path="tickets" element={<Tickets />} />
+            <Route path='profile' element={<Account/>}/>
           </Route>
         </Route>
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

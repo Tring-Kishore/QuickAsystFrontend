@@ -1,0 +1,43 @@
+.custom-table-container {
+    max-height: 550px;
+    overflow-y: auto;
+    
+    
+    &::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      background-color: #c1c1c1;
+      border-radius: 4px;
+    }
+  }
+.table-head-row{
+    background-color: #F9F9FA;
+    height: 48px;
+}
+TableRow{
+    height: 48px;
+}
+.table-checkbox{
+    color: grey;
+}
+.column-header{
+    display: flex;
+    align-items: center;
+    color: #9CA3AF;
+    font-family: Glegoo,serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+
+
+}
+.custom-table-rows{
+    height: 48px;
+}
+.custom-table-rows:nth-of-type(even) {
+    background-color: #F9F9FA;
+  }
+  
