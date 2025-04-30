@@ -1,16 +1,88 @@
-.custom-tabs {
-    .MuiTabs-indicator.custom-tab-indicator {
-      background-color: #5D75F8;
+.tickets-outer-class{
+  padding: 20px;
+  height: 100%;
+  .btns{
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 15px;
+    .all-tabs{
+      max-width: 100vw;
+      overflow: hidden;
     }
-  
-    .MuiTab-root {
-      color: #333;
-      font-weight: 500;
-      text-transform: none;
-  
-      &.Mui-selected {
-        color: #5D75F8;
+    .tickets-btns{
+      .tickets-btns-top{
+        display: flex;
+        gap: 15px;
+
+        .bulk-action-btn{
+          width: 143px;
+          height: 44px;
+          border: 1px solid #E3E5E8;
+          color: #5D75F8;
+          font-family: Glegoo,serif;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 21px;
+          text-align: center;
+          vertical-align: middle;
+          padding: 0;
+          text-transform: capitalize;
+          .bulk-action-icon-style{
+            width: 24px;
+            height: 24px;
+          }
+        }
+        .tickets-filter-btn{
+          width: 98px;
+          height: 44px;
+          color: #5D75F8;
+          border: 1px solid #E3E5E8;
+          font-family: Glegoo,serif;
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 21px;
+          text-align: center;
+          vertical-align: middle;
+          text-transform: capitalize;
+        }
       }
     }
+      }
+  .custom-tabs {
+    & .MuiTabScrollButton-root{
+      width: auto;
+    }
+    .tab{
+      font-family: Glegoo,serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    vertical-align: middle;
+    }
+  
+      .MuiTabs-indicator.custom-tab-indicator {
+        background-color: #5D75F8;
+      }
+    
+      .MuiTab-root {
+        color: #333;
+        font-weight: 700;
+        text-transform: none;
+    
+        &.Mui-selected {
+          color: #5D75F8;
+        }
+      }
+    }
+
+}
+
+@media screen and (max-width:1080px) {
+  .btns{
+    flex-direction: column;
+    gap: 15px;
   }
+  
+}
   

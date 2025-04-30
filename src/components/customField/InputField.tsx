@@ -10,7 +10,7 @@ interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
 
 const InputField: React.FC<InputFieldProps> = (props) => {
   const [showPassword, setShowPassword] = useState(false);
-  const { containerClassName, ...inputProps } = props;
+  const { containerClassName,} = props;
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };

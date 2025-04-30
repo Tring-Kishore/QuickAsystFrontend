@@ -7,6 +7,7 @@ import Tickets from './Pages/tickets/Tickets';
 import Content from './Pages/content/Content';
 import Account from './Pages/account/Account';
 
+
 function App() {
   return (
     <BrowserRouter>

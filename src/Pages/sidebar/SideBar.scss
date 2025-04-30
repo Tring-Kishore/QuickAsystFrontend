@@ -1,14 +1,14 @@
 .sidepanel {
     height: 100%;
     width: 80px;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
+    // position: fixed;
+    // z-index: 1;
+    // top: 0;
+    // left: 0;
     background-color: #111;
     overflow-x: hidden;
     transition: 0.5s;
-  
+    
     
   
     a {
@@ -71,23 +71,25 @@
         }
     }
 
-    .toggle{
-        position: relative;
+    
         .toggle-btn{
-            position: absolute;
+            position: relative;
             left: 66px;
-            bottom: 57px;
+            bottom: 85px;
             border-radius: 50%;
-            font-weight: bolder;
-            height: 20px;
+            height: 22px;
+            width: 22px;
+            padding: 4px;
             background-color: #f9f9fa;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
             transition: left 0.5s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            
         }
-      }
+      
 
       &.open {
         width: 234px;
@@ -127,4 +129,11 @@
     }
     
     
+}
+
+@media screen and (max-width: 740px) {
+  .sidepanel{
+    display: none;
+  }
+
 }

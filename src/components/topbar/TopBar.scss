@@ -1,92 +1,161 @@
 .topbar-container {
-    position: relative;
+  position: relative;
+  z-index: 100;
+}
+
+.topbar-outer-class {
+  width: 100%;
+  height: 72px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  .topbar-mobile-logo{
+    height: 100%;
+    width: 80px;
+    
+    justify-content: center;
+    align-items: center;
+    background-color:#151A34;
+    display: none;
   }
   
-  .topbar-outer-class {
-    width: 100%;
-    height: 72px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  .mobile-menu-button {
+    display: none;
+    background: none;
+    border: none;
+    padding: 10px;
+    margin-left: 15px;
+    cursor: pointer;
     
-    .top-bar-search {
-      padding-left: 20px;
+    img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .top-bar-search {
+    padding-left: 20px;
+    flex: 1;
+    
+    .search {
+      width: 342px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      background-color: #F3F4F6;
+      padding: 8px;
+      border-radius: 4px;
       
-      .search {
-        width: 342px;
-        height: 44px;
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        background-color: #F3F4F6;
-        padding: 8px;
-        
-        img {
-          width: 24px;
-          height: 24px;
-        }
-        
-        .searchbar {
-          width: 271px;
-          height: 21px;
-          border: none;
-          background-color: #F3F4F6;
-          font-family: Glegoo, serif;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 21px;
-          vertical-align: middle;
-          color: #9CA3AF;
-          outline: none;
-        }
+      img {
+        width: 24px;
+        height: 24px;
       }
+      
+      .searchbar {
+        width: 100%;
+        height: 21px;
+        border: none;
+        background-color: transparent;
+        font-family: Glegoo, serif;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 21px;
+        vertical-align: middle;
+        color: #9CA3AF;
+        outline: none;
+      }
+    }
+  }
+  
+  .top-bar-profile {
+    width: 160px;
+    height: 48px;
+    display: flex;
+    gap: 17px;
+    padding-right: 20px;
+    cursor: pointer;
+    
+    .topbar-proflie-pic {
+      width: 40%;
+      height: 100%;
+      
+      .profilepic {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+    
+    .topbar-profile-name {
+      width: 60%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      
+      p {
+        font-family: Glegoo, serif;
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 21px;
+        vertical-align: middle;
+        color: #151A34;
+      }
+    }
+  }
+}
+
+.menu-options {
+  display: none;
+  position: absolute;
+  top: 72px;
+  right: 20px;
+  background-color: white;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  
+  &.menu-active {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .top-bar-search .search {
+    width: 250px;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .topbar-outer-class {
+    .mobile-menu-button {
+      display: block;
+    }
+    .topbar-mobile-logo{
+    display: flex;
     }
     
     .top-bar-profile {
-      width: 160px;
-      height: 48px;
-      display: flex;
-      gap: 17px;
-      padding-right: 20px;
-      cursor: pointer;
+      display: none;
+    }
+    
+    .top-bar-search {
+      padding-left: 10px;
       
-      .topbar-proflie-pic {
-        width: 40%;
-        height: 100%;
-        
-        .profilepic {
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-        }
-      }
-      
-      .topbar-profile-name {
-        width: 60%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        
-        p {
-          font-family: Glegoo, serif;
-          font-weight: 700;
-          font-size: 14px;
-          line-height: 21px;
-          vertical-align: middle;
-          color: #151A34;
-        }
+      .search {
+        width: 100%;
+        max-width: 200px;
       }
     }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .top-bar-search .search {
+    width: 150px !important;
   }
   
-  .menu-options {
-    display: none;
-    position: absolute;
-    top: 72px;
-    right: 20px;
-    background-color: white;
-    z-index: 1000;
-    &.menu-active {
-        display: flex;
-    }
-  }
+}

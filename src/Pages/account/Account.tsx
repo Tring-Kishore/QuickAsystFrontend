@@ -19,6 +19,7 @@ const Account = () => {
     avatarUrl: ""
   });
 
+ 
   useEffect(() => {
     if (data?.get_user_profile?.[0]) {
       const user = data.get_user_profile[0];
@@ -97,8 +98,12 @@ const Account = () => {
     },
   ];
 
-  if (loading) return <div className="topbar-outer-class">Loading...</div>;
-  if (error) return <div className="topbar-outer-class">Error loading profile</div>;
+  if (loading){
+     return <div className="topbar-outer-class">Loading...</div>
+    }
+  if (error){
+     return <div className="topbar-outer-class">Error loading profile</div>
+    }
 
   return (
     <div className="account-outer-class">
@@ -127,9 +132,7 @@ const Account = () => {
                 {profileDetails.map((detail) => (
                   <div key={detail.key} className="account-profile-details">
                     <p className="account-details-key">{detail.label}</p>
-                    <div className="account-details-values">
                       <p className="account-details-value">{detail.value || "-"}</p>
-                    </div>
                   </div>
                 ))}
               </div>

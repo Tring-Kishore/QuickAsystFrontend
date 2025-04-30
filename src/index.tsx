@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Amplify } from 'aws-amplify';
-import awsConfig from '../src/config/config';
+import awsConfig from './config/config';
 import client from './apolloclient';
 import { ApolloProvider } from '@apollo/client';
 

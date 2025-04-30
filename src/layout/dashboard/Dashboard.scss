@@ -17,13 +17,13 @@
     flex-grow: 1;
     overflow-y: hidden;
     width: calc(100% - 80px);
-    margin-left: 80px;
+    // margin-left: 80px;
     transition: all 0.5s ease;
   }
   
   .sidepanel.open ~ .content-dashboard {
     width: calc(100% - 234px);
-    margin-left: 234px;
+    // margin-left: 234px;
   }
   .sidebar-options.active {
     

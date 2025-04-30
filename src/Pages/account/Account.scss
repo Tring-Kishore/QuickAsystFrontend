@@ -23,7 +23,7 @@
         padding-left: 20px;
   
         p {
-          font-family: 'Playfair Display';
+          font-family: 'Playfair Display',serif;
           font-weight: 700;
           font-size: 24px;
           line-height: 27px;
@@ -49,7 +49,7 @@
           border: none;
           cursor: pointer;
           border-radius: 4px;
-          font-family: 'Glegoo';
+          font-family: 'Glegoo',serif;
           font-weight: 700;
           font-size: 12px;
         }
@@ -129,26 +129,27 @@
               justify-content: space-between;
   
               .account-details-key {
-                font-family: 'Glegoo';
+                font-family: 'Glegoo',serif;
                 font-weight: 700;
                 font-size: 14px;
                 line-height: 21px;
                 color: #9CA3AF;
               }
   
-              .account-details-values {
-                display: flex;
-                justify-content: flex-start;
+              // .account-details-values {
+              //   display: flex;
+              //   justify-content: flex-start;
   
                 .account-details-value {
                   width: 200px;
-                  font-family: 'Glegoo';
+                  font-family: 'Glegoo',serif;
                   font-weight: 700;
                   font-size: 14px;
                   line-height: 21px;
                   color: #475569;
+                  text-align: center;
                 }
-              }
+              // }
             }
           }
   
@@ -173,7 +174,7 @@
                 width: 265px;
   
                 label {
-                  font-family: 'Glegoo';
+                  font-family: 'Glegoo',serif;
                   font-weight: 400;
                   font-size: 14px;
                   line-height: 21px;
@@ -191,7 +192,7 @@
                     padding: 10px 15px;
                     border: 1px solid #E3E5E8;
                     border-radius: 4px;
-                    font-family: 'Glegoo';
+                    font-family: 'Glegoo',serif;
                     font-size: 14px;
                     color: #475569;
                     background-color: #FFFFFF;
@@ -199,7 +200,7 @@
   
                     &:focus {
                       outline: none;
-                      border-color: #5D75F8;
+                      
                     }
   
                     &:disabled {
@@ -221,7 +222,7 @@
                 width: 100%;
   
                 label {
-                  font-family: 'Glegoo';
+                  font-family: 'Glegoo',serif;
                   font-weight: 400;
                   font-size: 14px;
                   line-height: 21px;
@@ -239,7 +240,7 @@
                     padding: 10px 15px;
                     border: 1px solid #E3E5E8;
                     border-radius: 4px;
-                    font-family: 'Glegoo';
+                    font-family: 'Glegoo',serif;
                     font-size: 14px;
                     color: #475569;
                     background-color: #FFFFFF;
@@ -263,7 +264,7 @@
               button {
                 width: 142px;
                 height: 44px;
-                font-family: 'Glegoo';
+                font-family: 'Glegoo',serif;
                 font-weight: 700;
                 font-size: 12px;
                 line-height: 22px;
@@ -271,12 +272,9 @@
                 border: none;
                 cursor: pointer;
                 border-radius: 4px;
-                transition: all 0.2s ease;
+              
   
-                &:hover {
-                  opacity: 0.9;
-                  transform: translateY(-1px);
-                }
+                
               }
   
               .edit-profile-cancel {
@@ -301,4 +299,86 @@
         }
       }
     }
+  }
+
+
+  @media screen and (max-width: 800px) {
+    .account-profile{
+      width: 500px!important;
+      
+    }
+    .profile-form-group{
+      width: 180px!important;
+    }
+    .account-profile.account-profile-edit{
+      height: 425px!important;
+      .account-profile-inputs{
+        gap: 20px!important;
+      }
+    }
+    
+  }
+
+  @media screen and (max-width: 740px) {
+    .account-profile.account-profile-edit{
+      width: 400px!important;
+      
+    }
+    .profile-form-group{
+      width: 150px!important;
+    }
+  }
+  @media screen and (max-width: 506px) {
+    .account-profile{
+      width: 350px!important;
+      .account-profile-details{
+        justify-content: space-around!important;
+        
+      }
+    }
+    .account-profile-img-div {
+      width: 100px!important;
+      height:100px!important;
+  
+    }
+
+  }
+  @media screen and (max-width: 410px) {
+    .account-profile.account-profile-edit {
+      width: 350px!important;
+  }
+  }
+  @media screen and (max-width: 360px) {
+    .account-profile{
+      width: 310px!important;
+        .account-details-value{
+          width: 100px!important;
+        }
+        
+    }
+    .account-profile.account-profile-edit{
+      width: 300px!important;
+    }
+    .profile-inputs{
+      justify-content: space-around!important;
+      .profile-form-group{
+        width: 130px!important;
+      }
+    }
+    .single-input{
+      .single-profile-input{
+        .input-container{
+          input{
+            width: 100%!important;
+          }
+        }
+      }
+    }
+    .profile-edit-btns{
+      justify-content: space-around!important;
+      button{
+        width: 100px!important;
+      }
+    }
+
   }

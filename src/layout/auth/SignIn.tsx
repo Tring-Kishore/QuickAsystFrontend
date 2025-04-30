@@ -60,7 +60,7 @@ const SignIn = () => {
       console.log('initial step of sign ',data);
       
       const { email, password } = data;
-      const user = await signIn({ username: email, password: password });
+      const user = await signIn({ username: email,  password });
       console.log("User signed in successfully:", user);
       navigate("/dashboard");
     } catch (error) {
