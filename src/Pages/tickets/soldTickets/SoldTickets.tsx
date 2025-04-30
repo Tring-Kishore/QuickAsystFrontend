@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import React, { useState } from 'react'
 import { FILTER_SOLD_TICKETS } from './soldTicketsAPI/SoldTicketsAPI';
 import CustomTable, { Column } from '../../../components/customTable/CustomTable';
+import { CircularProgress } from '@mui/material';
 interface FilterSoldTickets{
   tp_id:string;
   e_name:string;
@@ -60,7 +61,7 @@ const SoldTickets = () => {
     {id:'u_email_id',label:'Email'},
   ];
   if(loading){
-    return <div>Loading...</div>
+    return <div className="circular-progress"><CircularProgress/></div>
   }
   if(error){
     return <div>Error...</div>

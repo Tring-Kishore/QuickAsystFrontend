@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Tab, Tabs, Button, Menu, MenuItem, Popover } from "@mui/material";
+import { Box, Tab, Tabs, Button, Menu, MenuItem, Popover, CircularProgress } from "@mui/material";
 import { FilterList as FilterIcon} from "@mui/icons-material";
 import { useMutation, useQuery } from '@apollo/client';
 import "./Tickets.scss";
@@ -77,8 +77,8 @@ const Tickets = () => {
     switch (activeTab) {
       case 0:
         return (
-          <ManageTickets 
-            onSelectionChange={handleSelectionChange} />
+         <ManageTickets 
+             onSelectionChange={handleSelectionChange} />
         );
       case 1:
         return <ListTickets/>;

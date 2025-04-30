@@ -8,6 +8,7 @@ import {
   ManageTicket,
 } from "./manageTicketsAPI/ManageTicketsAPI";
 import "./ManageTickets.scss";
+import CircularProgress from '@mui/material/CircularProgress';
 interface ManageTicketsProps {
   onSelectionChange: (selectedIds: string[]) => void;
 }
@@ -164,7 +165,7 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
     { id: "e_date_time_zone", label: "Period Left", width: "130px" },
   ];
   if (loading){
-    return <div>Loading...</div>;
+    return <div className="circular-progress"><CircularProgress/></div>;
   } 
   if (error){
     return <div>Error loading tickets</div>;

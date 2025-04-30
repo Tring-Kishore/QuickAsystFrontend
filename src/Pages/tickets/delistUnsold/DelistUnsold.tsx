@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
 import { FILTER_UNSOLD_TICKETS_QUERY } from "./delistUnsoldAPI/DelistUnsoldAPI";
+import { CircularProgress } from "@mui/material";
 interface FilterUnsoldTicket {
   tp_id: string;
   e_name: string;
@@ -69,7 +70,7 @@ const DelistUnsold: React.FC = () => {
     { id: "u_email_id", label: "Email" },
   ];
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="circular-progress"><CircularProgress/></div>
   }
   if (error) {
     return <div>Error loading unsold tickets</div>;

@@ -2,6 +2,7 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_LIST_TICKETS, ListTicket } from "./ListTicketsAPI/ListTicketsAPI";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
+import { CircularProgress } from "@mui/material";
 const useListTickets = (pageSize: number, pageOffset: number) => {
   const { loading, error, data, refetch } = useQuery(GET_LIST_TICKETS, {
     variables: {
@@ -68,7 +69,7 @@ const ListTickets = () => {
     { id: "u_email_id", label: "Email" },
     { id: "tp_list_price", label: "Price" },
   ];
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="circular-progress"><CircularProgress/></div>
   if (error) return <div>Error loading list tickets.</div>;
   return (
     <div>

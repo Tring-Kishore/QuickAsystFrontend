@@ -3,6 +3,7 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
 import { FILTER_RETURN_TICKETS_QUERY } from "./delistReturnAPI/DelistReturnAPI";
+import { CircularProgress } from "@mui/material";
 interface FilterReturnTicket {
   tp_id: string;
   e_name: string;
@@ -70,7 +71,7 @@ const DelistReturn: React.FC = () => {
     { id: "u_email_id", label: "Email" },
   ];
   if (loading){
-    return <div>Loading...</div>;
+    return <div className="circular-progress"><CircularProgress/></div>
   } 
   if (error){
 
