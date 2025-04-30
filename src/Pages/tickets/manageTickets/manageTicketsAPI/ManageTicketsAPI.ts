@@ -97,7 +97,7 @@ export const GET_MANAGE_TICKETS = gql`
   }
 `;
 
-// ... rest of your API file (UPDATE_TICKET_STATUS and interfaces)
+
 
 export const UPDATE_TICKET_STATUS = gql`
   mutation UpdateTicketStatus($isValid: Boolean, $ticketPlacementId: [uuid!]!, $isUndoRequest: Boolean) {

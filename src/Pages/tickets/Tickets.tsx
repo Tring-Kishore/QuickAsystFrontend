@@ -5,7 +5,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import "./Tickets.scss";
 import ManageTickets from "./manageTickets/ManageTickets";
 import bulkactionicon from "../../assets/images/bulkactionicon.svg";
-import CustomDialogue from "../../components/customDialogue/CustomDialogue";
+// import CustomDialogue from "../../components/customDialogue/CustomDialogue";
 import { UPDATE_TICKET_STATUS,GET_MANAGE_TICKETS } from "./manageTickets/manageTicketsAPI/ManageTicketsAPI";
 import DelistReturn from "./delistReturn/DelistReturn";
 import DelistUnsold from "./delistUnsold/DelistUnsold";
@@ -181,7 +181,7 @@ const Tickets = () => {
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-              <CustomDialogue onActiveTabs={activeTab} />
+              {/* <CustomDialogue onActiveTabs={activeTab} /> */}
             </Popover>
           </div>
         </div>

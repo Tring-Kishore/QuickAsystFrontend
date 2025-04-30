@@ -1,4 +1,4 @@
-// DelistUnsold.tsx
+
 import React from "react";
 import { useQuery } from "@apollo/client";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
