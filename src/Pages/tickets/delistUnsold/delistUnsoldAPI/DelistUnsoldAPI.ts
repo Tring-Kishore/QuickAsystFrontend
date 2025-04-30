@@ -1,6 +1,4 @@
-// delistUnsoldAPI/DelistUnsoldAPI.ts
 import { gql } from "@apollo/client";
-
 export const FILTER_UNSOLD_TICKETS_QUERY = gql`
   query FilterUnsoldTickets(
     $enddate: date

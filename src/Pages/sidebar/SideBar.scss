@@ -4,9 +4,6 @@
     background-color: #111;
     overflow-x: hidden;
     transition: 0.5s;
-    
-    
-  
     a {
       padding: 8px 8px 8px 32px;
       text-decoration: none;
@@ -39,7 +36,6 @@
             padding-bottom: 12px;
             justify-content: center;
             cursor: pointer;
-            // border-left: 4px solid transparent;
             .sidebar-option-logo{
                 width:32%;
                 height: 100%;
@@ -57,17 +53,13 @@
                 vertical-align: middle;
                 color: #9CA3AF;
                 display: flex;
-                
                 align-items: center;
-
                 p{
                     margin: 0;
                 }
             }
         }
     }
-
-    
         .toggle-btn{
             position: relative;
             left: 66px;
@@ -83,19 +75,13 @@
             cursor: pointer;
             transition: left 0.5s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-            
         }
-      
-
       &.open {
         width: 234px;
         .toggle-btn{
           left: 220px;
         }
       }
-
-
-  
     .closebtn {
       position: absolute;
       top: 0;
@@ -111,7 +97,6 @@
       }
     }
   }
-  
   .openbtn {
     font-size: 20px;
     cursor: pointer;
@@ -119,17 +104,12 @@
     color: white;
     padding: 10px 15px;
     border: none;
-  
     &:hover {
       background-color: #444;
-    }
-    
-    
+    }   
 }
-
 @media screen and (max-width: 740px) {
   .sidepanel{
     display: none;
   }
-
 }

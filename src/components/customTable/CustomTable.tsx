@@ -39,7 +39,6 @@ interface ReusableTableProps<T> {
   hideCheckbox?: boolean;
   hideActions?: boolean; 
 }
-
 const CustomTable = <T,>({
   columns,
   data,
@@ -95,9 +94,6 @@ const CustomTable = <T,>({
   };
 
   const totalPages = Math.ceil(totalCount / rowsPerPage);
-  console.log('the total Page',totalPages);
-  
-
   return (
     <>
       <TableContainer component={Paper} className="custom-table-container">
@@ -122,14 +118,11 @@ const CustomTable = <T,>({
               )}
             </TableRow>
           </TableHead>
-
-          
           <TableBody>
             {data.map((row: any) => {
               const rowId = getRowId(row);
               const isChecked = selected.includes(rowId);
               const isVerified = isVerifiedStatus(row);
-
               return (
                 <TableRow key={rowId} className="custom-table-rows">
                    {!hideCheckbox && (
@@ -169,7 +162,6 @@ const CustomTable = <T,>({
           </TableBody>
         </Table>
       </TableContainer>
-
       <Box className='pagination-container'
       >
         <Box className="rows-per-page-control">
@@ -181,7 +173,6 @@ const CustomTable = <T,>({
               value={rowsPerPage}
               onChange={handleRowsPerPageChange}
               disableUnderline
-             
             >
               <MenuItem value={5}>5</MenuItem>
               <MenuItem value={10}>10</MenuItem>
@@ -201,5 +192,4 @@ const CustomTable = <T,>({
     </>
   );
 };
-
 export default CustomTable;

@@ -24,16 +24,13 @@ const SoldTickets = () => {
     },
     fetchPolicy:'network-only',
   });
-
   const handlePageChange = (newPage : number) => {
     setPage(newPage);
   };
-
   const handleRowsPerPageChange = (newRowsPerPage : number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(1);
   };
-
   const columns : Column<FilterSoldTickets>[] = [
     {id: 'e_name',label:'Events',width:'220px'},
     {id:'e_date',label:'Date',width:'170px'},
@@ -62,17 +59,14 @@ const SoldTickets = () => {
     {id:'u_full_name',label:'User Name',width:'120px'},
     {id:'u_email_id',label:'Email'},
   ];
-
   if(loading){
     return <div>Loading...</div>
   }
   if(error){
     return <div>Error...</div>
   }
-
   const totalCount = data?.FilterSoldTickets_aggregate?.aggregate?.count || 0;
   console.log('the soldtickets',totalCount);
-  
   return (
     <div>
       <div className="fullheight">
@@ -91,5 +85,4 @@ const SoldTickets = () => {
     </div>
   )
 }
-
 export default SoldTickets

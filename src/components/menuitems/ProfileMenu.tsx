@@ -46,13 +46,11 @@ interface ProfileMenuProps {
 const ProfileMenu: React.FC<ProfileMenuProps> = ({ onItemClick }) => {
   const navigate = useNavigate();
   const [openPasswordDialog, setOpenPasswordDialog] = useState(false);
-
   const handleItemClick = (item: MenuItem) => {
     if (item.path) {
       navigate(item.path);
     }
     onItemClick();
-    
     if (item.text === 'Sign Out') {
       signOut({ global: true })
         .then(() => window.location.href = '/signin')
@@ -62,11 +60,9 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onItemClick }) => {
       setOpenPasswordDialog(true);
     }
   };
-
   const handleClosePasswordDialog = () => {
     setOpenPasswordDialog(false);
   };
-
   return (
     <>
       <Box component="nav" className="navContainer"> 
@@ -89,7 +85,6 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onItemClick }) => {
           ))}
         </List>
       </Box>
-
       <Dialog
         open={openPasswordDialog}
         onClose={handleClosePasswordDialog}
@@ -101,5 +96,4 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onItemClick }) => {
     </>
   );
 };
-
 export default ProfileMenu;

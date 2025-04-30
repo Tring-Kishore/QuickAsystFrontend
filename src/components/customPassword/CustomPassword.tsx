@@ -89,5 +89,4 @@ const CustomPassword = ({onClose}:CustomPasswordProps) => {
     </div>
   );
 };
-
 export default CustomPassword;

@@ -1,5 +1,4 @@
 import { gql } from "@apollo/client";
-
 export const GET_LIST_TICKETS = gql`
   query Filterlisttickets(
     $enddate: date

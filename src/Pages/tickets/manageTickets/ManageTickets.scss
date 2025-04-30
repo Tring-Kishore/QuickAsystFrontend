@@ -1,34 +1,22 @@
-
-
 .manageTicket-fullheight {
   height: 100%;
 }
-
-
 .custom-chip {
   border-radius: 0 !important;
-  font-weight: 500;
-  
-  
+  font-weight: 500;  
   &[data-status="tobeverified"] {
     background-color: #FB923C1A !important;
     color: #FB923C !important;
   }
-
-  
   &[data-status="delist"] {
     background-color: #FF004D1A !important;
     color: #EF4444 !important;
   }
-
-  
   &[data-status="verified"] {
     background-color: #22c55e1A !important;
     color: #22c55e !important;
   }
 }
-
-
 .ticket-placement-header {
   display: flex;
   flex-direction: column;
@@ -39,12 +27,10 @@
     font-weight: bold;
     margin-bottom: 4px;
   }
-
   .sub-headers {
     display: flex;
     justify-content: space-around;
     gap: 20px;
-
     span {
       flex: 1;
       font-size: 0.8em;
@@ -52,12 +38,10 @@
     }
   }
 }
-
 .ticket-placement-values {
   display: flex;
   justify-content: space-around;
   gap: 10px;
-
   span {
     flex: 1;
     text-align: center;

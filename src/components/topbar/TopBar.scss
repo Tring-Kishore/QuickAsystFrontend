@@ -2,7 +2,6 @@
   position: relative;
   z-index: 100;
 }
-
 .topbar-outer-class {
   width: 100%;
   height: 72px;
@@ -20,7 +19,6 @@
     background-color:#151A34;
     display: none;
   }
-  
   .mobile-menu-button {
     display: none;
     background: none;
@@ -28,17 +26,14 @@
     padding: 10px;
     margin-left: 15px;
     cursor: pointer;
-    
     img {
       width: 24px;
       height: 24px;
     }
   }
-
   .top-bar-search {
     padding-left: 20px;
     flex: 1;
-    
     .search {
       width: 342px;
       height: 44px;
@@ -48,12 +43,10 @@
       background-color: #F3F4F6;
       padding: 8px;
       border-radius: 4px;
-      
       img {
         width: 24px;
         height: 24px;
       }
-      
       .searchbar {
         width: 100%;
         height: 21px;
@@ -69,7 +62,6 @@
       }
     }
   }
-  
   .top-bar-profile {
     width: 160px;
     height: 48px;
@@ -77,11 +69,9 @@
     gap: 17px;
     padding-right: 20px;
     cursor: pointer;
-    
     .topbar-proflie-pic {
       width: 40%;
-      height: 100%;
-      
+      height: 100%; 
       .profilepic {
         width: 100%;
         height: 100%;
@@ -89,13 +79,11 @@
         object-fit: cover;
       }
     }
-    
     .topbar-profile-name {
       width: 60%;
       height: 100%;
       display: flex;
       align-items: center;
-      
       p {
         font-family: Glegoo, serif;
         font-weight: 700;
@@ -107,7 +95,6 @@
     }
   }
 }
-
 .menu-options {
   display: none;
   position: absolute;
@@ -116,19 +103,16 @@
   background-color: white;
   z-index: 1000;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  
+  border-radius: 4px; 
   &.menu-active {
     display: flex;
   }
 }
-
 @media screen and (max-width: 800px) {
   .top-bar-search .search {
     width: 250px;
   }
 }
-
 @media screen and (max-width: 740px) {
   .topbar-outer-class {
     .mobile-menu-button {
@@ -137,14 +121,11 @@
     .topbar-mobile-logo{
     display: flex;
     }
-    
     .top-bar-profile {
       display: none;
     }
-    
     .top-bar-search {
-      padding-left: 10px;
-      
+      padding-left: 10px; 
       .search {
         width: 100%;
         max-width: 200px;
@@ -152,10 +133,8 @@
     }
   }
 }
-
 @media screen and (max-width: 480px) {
   .top-bar-search .search {
     width: 150px !important;
   }
-  
 }

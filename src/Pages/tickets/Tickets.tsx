@@ -11,53 +11,39 @@ import DelistReturn from "./delistReturn/DelistReturn";
 import DelistUnsold from "./delistUnsold/DelistUnsold";
 import ListTickets from "./listTickets/ListTickets";
 import SoldTickets from "./soldTickets/SoldTickets";
-
 const Tickets = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedTicketIds, setSelectedTicketIds] = useState<string[]>([]);
   const [updateTicketStatus] = useMutation(UPDATE_TICKET_STATUS);
-
- 
   const {  refetch } = useQuery(GET_MANAGE_TICKETS, {
     fetchPolicy: 'network-only',
   });
-
-  
   const bulkActionOpen = Boolean(anchorEl);
   const filterOpen = Boolean(filterAnchorEl);
-
   const handleTabChange = (event: any, newValue: number) => {
     setActiveTab(newValue);
   };
-
   const handleSelectionChange = (selectedIds: string[]) => {
     setSelectedTicketIds(selectedIds);
   };
-
   const handleBulkActionClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-
   const handleFilterClick = (event: React.MouseEvent<HTMLElement>) => {
     setFilterAnchorEl(event.currentTarget);
   };
-
-  
-
   const handleClose = () => {
     setAnchorEl(null);
     setFilterAnchorEl(null);
   };
-
   const handleBulkAction = async (action: string) => {
     if (selectedTicketIds.length === 0) {
       alert("Please select at least one ticket");
       handleClose();
       return;
     }
-  
     try {
       let isValid: boolean | null = null;
       switch (action) {
@@ -72,7 +58,6 @@ const Tickets = () => {
         case 'Return':
           break;
       }
-  
       if (isValid !== null) {
         await updateTicketStatus({
           variables: {
@@ -81,25 +66,19 @@ const Tickets = () => {
             isUndoRequest: false
           },
         });
-        
-        
         await refetch();
       }
-  
       handleClose();
     } catch (error) {
       console.error('Error performing bulk action:', error);
     }
   };
-
   const renderTabContent = () => {
     switch (activeTab) {
       case 0:
         return (
           <ManageTickets 
-            onSelectionChange={handleSelectionChange}
-            
-          />
+            onSelectionChange={handleSelectionChange} />
         );
       case 1:
         return <ListTickets/>;
@@ -113,7 +92,6 @@ const Tickets = () => {
         return null;
     }
   };
-
   return (
     <div className="tickets-outer-class">
       <div className="btns">
@@ -136,7 +114,6 @@ const Tickets = () => {
             </Tabs>
           </Box>
         </div>
-        
         <div className="tickets-btns">
           <div className="tickets-btns-top">
           {activeTab === 0 && (
@@ -149,7 +126,6 @@ const Tickets = () => {
                 >
                   Bulk Action
                 </Button>
-
                 <Menu
                   id="fade-menu"
                   anchorEl={anchorEl}
@@ -163,8 +139,6 @@ const Tickets = () => {
                 </Menu>
               </>
             )}
-
-
             <Button
               className="tickets-filter-btn"
               variant="outlined"
@@ -173,7 +147,6 @@ const Tickets = () => {
             >
               Filter
             </Button>
-
             <Popover
               open={filterOpen}
               anchorEl={filterAnchorEl}
@@ -190,5 +163,4 @@ const Tickets = () => {
     </div>
   );
 };
-
 export default Tickets;

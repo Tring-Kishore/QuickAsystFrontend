@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client';
-
 export const GET_MANAGE_TICKETS = gql`
   query Filtermanagetickets(
     $enddate: date, 
@@ -96,9 +95,6 @@ export const GET_MANAGE_TICKETS = gql`
     }
   }
 `;
-
-
-
 export const UPDATE_TICKET_STATUS = gql`
   mutation UpdateTicketStatus($isValid: Boolean, $ticketPlacementId: [uuid!]!, $isUndoRequest: Boolean) {
     updateTicketStatus(
@@ -110,7 +106,6 @@ export const UPDATE_TICKET_STATUS = gql`
     }
   }
 `;
-
 export interface ManageTicket {
   tp_id: string;
   e_name: string;

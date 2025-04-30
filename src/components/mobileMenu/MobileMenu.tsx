@@ -14,14 +14,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({isOpen, onClose }) => {
   if(!isOpen){
      return null
     }
-  
   const handleItemClick = (path?: string) => {
     if (path) {
       navigate(path);
     }
     onClose();
   };
-
   return (
     <div className="mobile-menu-container">
       <div className="mobile-menu-content">
@@ -42,7 +40,6 @@ const MobileMenu: React.FC<MobileMenuProps> = ({isOpen, onClose }) => {
             ))}
           </div>
         </div>
-
         <div className="mobile-menu-section">
           <h3 className="section-title">Account</h3>
           <div className="options-list">
@@ -64,5 +61,4 @@ const MobileMenu: React.FC<MobileMenuProps> = ({isOpen, onClose }) => {
     </div>
   );
 };
-
 export default MobileMenu;

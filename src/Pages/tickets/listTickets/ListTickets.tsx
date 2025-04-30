@@ -2,8 +2,6 @@ import React from "react";
 import { useQuery } from "@apollo/client";
 import { GET_LIST_TICKETS, ListTicket } from "./ListTicketsAPI/ListTicketsAPI";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
-
-
 const useListTickets = (pageSize: number, pageOffset: number) => {
   const { loading, error, data, refetch } = useQuery(GET_LIST_TICKETS, {
     variables: {
@@ -21,28 +19,23 @@ const useListTickets = (pageSize: number, pageOffset: number) => {
     },
     fetchPolicy: "network-only",
   });
-
   const tickets: ListTicket[] = data?.filterlisttickets || [];
   const totalCount: number = data?.filterlisttickets_aggregate?.aggregate?.count || 0;
 
   return { loading, error, tickets, totalCount, refetch };
 };
-
 const ListTickets = () => {
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
   const { loading, error, tickets, totalCount } = useListTickets(
     rowsPerPage,
     (page - 1) * rowsPerPage
   );
-
   const handlePageChange = (newPage: number) => setPage(newPage);
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(1);
   };
-
   const columns: Column<ListTicket>[] = [
     { id: "e_name", label: "Event" },
     { id: "e_date", label: "Date" },
@@ -75,10 +68,8 @@ const ListTickets = () => {
     { id: "u_email_id", label: "Email" },
     { id: "tp_list_price", label: "Price" },
   ];
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error loading list tickets.</div>;
-
   return (
     <div>
       <CustomTable
@@ -95,5 +86,4 @@ const ListTickets = () => {
     </div>
   );
 };
-
 export default ListTickets;

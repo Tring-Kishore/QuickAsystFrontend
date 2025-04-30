@@ -1,9 +1,7 @@
-
 import React from "react";
 import { useQuery } from "@apollo/client";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
 import { FILTER_UNSOLD_TICKETS_QUERY } from "./delistUnsoldAPI/DelistUnsoldAPI";
-
 interface FilterUnsoldTicket {
   tp_id: string;
   e_name: string;
@@ -16,11 +14,9 @@ interface FilterUnsoldTicket {
   u_email_id: string;
   e_date_time_zone?: string;
 }
-
 const DelistUnsold: React.FC = () => {
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
   const { data, loading, error } = useQuery(FILTER_UNSOLD_TICKETS_QUERY, {
     variables: {
       enddate: null,
@@ -37,16 +33,13 @@ const DelistUnsold: React.FC = () => {
     },
     fetchPolicy: "network-only",
   });
-
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
-
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(1);
   };
-
   const columns: Column<FilterUnsoldTicket>[] = [
     { id: "e_name", label: "Events", width: "220px" },
     { id: "e_date", label: "Date", width: "170px" },
@@ -75,14 +68,12 @@ const DelistUnsold: React.FC = () => {
     { id: "u_full_name", label: "User Name", width: "120px" },
     { id: "u_email_id", label: "Email" },
   ];
-
   if (loading) {
     return <div>Loading...</div>;
   }
   if (error) {
     return <div>Error loading unsold tickets</div>;
   }
-
   return (
     <div className="fullheight">
       <CustomTable
@@ -100,5 +91,4 @@ const DelistUnsold: React.FC = () => {
     </div>
   );
 };
-
 export default DelistUnsold;

@@ -14,7 +14,6 @@ export interface SidebarItem {
   altText: string;
   path: string;
 }
-
 export const sidebarItems: SidebarItem[] = [
   {
     id: 'dashboard',
@@ -31,20 +30,16 @@ export const sidebarItems: SidebarItem[] = [
     path: '/dashboard/tickets'
   }
 ];
-
 const SideBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeItem, setActiveItem] = useState<string | null>('dashboard');
   const location = useLocation();
   const navigate = useNavigate();
-
   const toggleNav = () => setIsOpen(!isOpen);
-
   const handleNavigation = (item: SidebarItem) => {
     setActiveItem(item.id);
     navigate(item.path);
   };
-
   useEffect(() => {
     const currentPath = location.pathname;
     const currentItem = sidebarItems.find(item => item.path === currentPath);
@@ -52,13 +47,11 @@ const SideBar: React.FC = () => {
       setActiveItem(currentItem.id);
     }
   }, [location]);
-
   return (
     <div className={`sidepanel ${isOpen ? 'open' : ''}`}>
       <div className='sidebar-logo'>
         <img src={isOpen ? logo : sidebarsmalllogo} alt="quick asyst logo"/>
       </div>
-      
       <div className="sidebar-list">
         {sidebarItems.map((item) => (
           <div 
@@ -77,12 +70,9 @@ const SideBar: React.FC = () => {
           </div>
         ))}
       </div>
-      
-      {/* <div className='toggle'> */}
         <div className="toggle-btn" onClick={toggleNav}>
           {isOpen ? <ArrowBackIosNewIcon/> : <ArrowForwardIosIcon/>}
         </div>
-      {/* </div> */}
     </div>
   );
 };

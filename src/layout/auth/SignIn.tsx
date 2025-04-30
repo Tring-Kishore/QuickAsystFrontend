@@ -9,7 +9,6 @@ const SignIn = () => {
     email: string;
     password: string;
   };
-
   const inputfields: {
     id: string;
     name: keyof FormValue;
@@ -47,14 +46,12 @@ const SignIn = () => {
       },
     },
   ];
-
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValue>();
-
   const onSubmit = async (data: FormValue) => {
     try {
       console.log('initial step of sign ',data);
@@ -68,7 +65,6 @@ const SignIn = () => {
       
     }
   };
-
   return (
     <div className="outer-class-signin">
       <div className="image-div">
@@ -84,7 +80,6 @@ const SignIn = () => {
         </div>
       </div>
       <div className="content">
-
       <div className="content-signin">
         <div className="signin-logo">
           <img src={SignInLogo} alt="signin logo" />
@@ -123,5 +118,4 @@ const SignIn = () => {
     </div>
   );
 };
-
 export default SignIn;

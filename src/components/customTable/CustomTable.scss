@@ -1,22 +1,18 @@
 .custom-table-container {
   max-height: 80%;
   overflow-y: auto;
-
   &::-webkit-scrollbar {
     height: 8px;
     width: 8px;
   }
-
   &::-webkit-scrollbar-thumb {
     background-color: #c1c1c1;
     border-radius: 4px;
   }
 }
-
 .table-head-row {
   background-color: #f9f9fa;
   height: 48px;
-
   .sticky-actions {
     position: sticky;
     top: 0;
@@ -30,11 +26,9 @@
     line-height: 21px;
   }
 }
-
 .table-checkbox {
   color: grey;
 }
-
 .column-header {
   display: flex;
   align-items: center;
@@ -43,30 +37,24 @@
   font-weight: 700;
   font-size: 14px;
   line-height: 21px;
-
   .sort-icon {
     margin-left: 5px;
   }
 }
-
 .column-cell {
   width: auto;
 }
-
 .custom-table-rows {
   height: 48px;
-
   &:nth-of-type(even) {
     background-color: #f9f9fa;
   }
-
   .table-body-content {
     font-family: Glegoo, serif;
     font-weight: 700;
     font-size: 14px;
     line-height: 21px;
   }
-
   .sticky-actions {
     text-align: center;
     position: sticky;
@@ -78,7 +66,6 @@
     font-weight: 700;
     font-size: 14px;
     line-height: 21px;
-
     .manage-ticket-publish-btn {
       width: 104px;
       height: 36px;
@@ -91,7 +78,6 @@
       line-height: 19px;
       text-align: center;
       cursor: not-allowed;
-
       &.verified {
         color: #5d75f8;
         border-color: #5d75f8;
@@ -100,7 +86,6 @@
     }
   }
 }
-
 .pagination-container {
   display: flex;
   justify-content: space-between;
@@ -113,28 +98,23 @@
   padding: 10px 16px;
   border-top: 1px solid #e0e0e0;
 }
-
 .rows-per-page-control {
   display: flex;
   align-items: center;
 }
-
 .rows-per-page-label {
   margin-right: 8px;
 }
-
 .rows-per-page-select {
   .MuiSelect-select {
     padding-right: 24px;
     padding-left: 8px;
   }
 }
-
 .custom-pagination {
   .MuiPaginationItem-root {
     color: var(--mui-palette-text-primary);
   }
-
   .Mui-selected {
     background-color: var(--mui-palette-primary-main);
     color: white;

@@ -1,7 +1,6 @@
 .outer-class-signin{
     padding: 20px;
     display: flex;
-    
     align-items: center;
     .image-div{
         width: 50%;
@@ -17,7 +16,6 @@
             background-position: top;
             background-size: cover;
             overflow: hidden;
-    
             &::after{
                 content: '';
                 position: absolute;
@@ -28,7 +26,6 @@
                 background-color: rgba(0, 0, 0, 0.5);
                 z-index: 1;
             }
-            
             .textin-image{
                 width: 90%;
                 padding-bottom: 35px;
@@ -44,7 +41,6 @@
                     line-height: 100%;
                     color: #FFFFFF;
                 }
-        
                 .textin-big-para p {
                     font-family: 'Playfair Display',serif;
                     font-weight: 600;
@@ -64,7 +60,6 @@
         .content-signin{
             width: 90%;
             height: 530px;
-    
             .signin-content{
                 width: 100%;
                 .signin-content-heading{
@@ -148,10 +143,8 @@
             cursor: pointer;
         }
         }
-    }
-    
+    }   
 }
-
 @media screen and (max-width: 970px) {
     .signin-logo{
         img{
@@ -162,7 +155,6 @@
         }
     }
 }
-
 @media screen and (max-width: 768px) {
     .outer-class-signin{
         flex-direction: column;
@@ -183,10 +175,8 @@
     }
     .content-signin{
         left: 0!important;
-    }
-    
+    }   
 }
-
 @media screen and (max-width:630px) {
     .image-div{
         display: none!important;

@@ -20,7 +20,6 @@
     input.error {
         border: 1px solid red;
       }
-      
     .password-toggle{
         background: none;
         border: none;
@@ -30,7 +29,6 @@
     
      }
 }
-
 @media screen and (max-width: 768px) {
     .input-container{
         input::placeholder{
@@ -44,8 +42,6 @@
         }
     }
 }
-
-
 @media screen and (max-width: 376px) {
     .input-container{
         width: 100%!important;

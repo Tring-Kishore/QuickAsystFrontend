@@ -8,12 +8,9 @@ import {
   ManageTicket,
 } from "./manageTicketsAPI/ManageTicketsAPI";
 import "./ManageTickets.scss";
-
 interface ManageTicketsProps {
   onSelectionChange: (selectedIds: string[]) => void;
 }
-
-
 const useManageTickets = (pageSize: number, pageOffset: number) => {
   const { loading, error, data, refetch } = useQuery(GET_MANAGE_TICKETS, {
     variables: {
@@ -32,13 +29,9 @@ const useManageTickets = (pageSize: number, pageOffset: number) => {
     },
     fetchPolicy: "network-only",
   });
-
   const [updateTicketStatus] = useMutation(UPDATE_TICKET_STATUS);
-
   const tickets = data?.filtermanagetickets || [];
   const totalCount = data?.filtermanagetickets_aggregate?.aggregate?.count || 0;
-  
-  
   const handleStatusChange = async (
     ticketId: string,
     newValidityStatus: boolean | null
@@ -57,7 +50,6 @@ const useManageTickets = (pageSize: number, pageOffset: number) => {
       throw error;
     }
   };
-
   return {
     loading,
     error,
@@ -67,11 +59,9 @@ const useManageTickets = (pageSize: number, pageOffset: number) => {
     refetch,
   };
 };
-
 const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
   const {
     loading,
     error,
@@ -79,25 +69,20 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
     totalCount,
     handleStatusChange,
   } = useManageTickets(rowsPerPage, (page - 1) * rowsPerPage);
-
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
-
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(1);
   };
-
   const handleSelectionChange = (ids: (string | number)[]) => {
     onSelectionChange(ids as string[]);
   };
-
   const getStatusFromValidity = (validityStatus: boolean | null): string => {
     if (validityStatus === null) return "ToBeVerified";
     return validityStatus ? "Verified" : "Delist";
   };
-
   const columns: Column<ManageTicket>[] = [
     { id: "e_name", label: "Events", width: "220px" },
     { id: "e_date", label: "Date", width: "170px" },
@@ -135,10 +120,8 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
           } else if (event.target.value === "Invalid") {
             newValue = false;
           }
-
           await handleStatusChange(row.tp_id, newValue);
         };
-
         return (
           <Select
             value={
@@ -180,16 +163,12 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
     { id: "u_email_id", label: "Email" },
     { id: "e_date_time_zone", label: "Period Left", width: "130px" },
   ];
-
-  
   if (loading){
     return <div>Loading...</div>;
   } 
   if (error){
     return <div>Error loading tickets</div>;
   } 
-
-
   return (
     <div className="manageTicket-fullheight">
       <CustomTable
@@ -206,5 +185,4 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
     </div>
   );
 };
-
 export default ManageTickets;
