@@ -74,7 +74,6 @@ const DelistReturn: React.FC = () => {
     return <div className="circular-progress"><CircularProgress/></div>
   } 
   if (error){
-
     return <div>Error loading tickets</div>;
   } 
   return (

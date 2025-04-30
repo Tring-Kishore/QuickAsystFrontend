@@ -4,6 +4,8 @@ import profilepic from "../../assets/images/profilepic.jpg";
 import { GET_USER_PROFILE, EDIT_PROFILE } from "./accountAPI/AccountAPI";
 import { useQuery, useMutation } from "@apollo/client";
 import InputField from "../../components/customField/InputField";
+import { CircularProgress } from "@mui/material";
+import { showErrorToast } from "../../components/CustomToast/CustomToast";
 
 const Account = () => {
   const { data, loading, error } = useQuery(GET_USER_PROFILE);
@@ -56,7 +58,7 @@ const Account = () => {
     } catch (err : any) {
       console.error("Error updating profile:", err);
       if (err.message.includes('user_u_phone_number_key')) {
-        alert('This phone number is already registered to another account');
+        showErrorToast('This phone number is already registered to another account');
       }
     }
   };
@@ -91,7 +93,7 @@ const Account = () => {
   ];
 
   if (loading){
-     return <div className="topbar-outer-class">Loading...</div>
+     return <div className="circular-progress"><CircularProgress/></div>
     }
   if (error){
      return <div className="topbar-outer-class">Error loading profile</div>

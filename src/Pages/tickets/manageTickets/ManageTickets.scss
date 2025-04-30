@@ -18,10 +18,10 @@
   }
 }
 .ticket-placement-header {
+  width: 100%;
   display: flex;
   flex-direction: column;
   text-align: center;
-  justify-content: space-evenly;
 
   .main-header {
     font-weight: bold;
@@ -29,8 +29,7 @@
   }
   .sub-headers {
     display: flex;
-    justify-content: space-around;
-    gap: 20px;
+    justify-content: space-between;
     span {
       flex: 1;
       font-size: 0.8em;

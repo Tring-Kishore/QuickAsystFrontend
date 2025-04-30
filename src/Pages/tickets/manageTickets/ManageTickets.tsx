@@ -9,6 +9,7 @@ import {
 } from "./manageTicketsAPI/ManageTicketsAPI";
 import "./ManageTickets.scss";
 import CircularProgress from '@mui/material/CircularProgress';
+import { calculateDaysLeft, formatToCDT } from "../../../utils/DateFomatter";
 interface ManageTicketsProps {
   onSelectionChange: (selectedIds: string[]) => void;
 }
@@ -30,6 +31,7 @@ const useManageTickets = (pageSize: number, pageOffset: number) => {
     },
     fetchPolicy: "network-only",
   });
+
   const [updateTicketStatus] = useMutation(UPDATE_TICKET_STATUS);
   const tickets = data?.filtermanagetickets || [];
   const totalCount = data?.filtermanagetickets_aggregate?.aggregate?.count || 0;
@@ -86,7 +88,12 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
   };
   const columns: Column<ManageTicket>[] = [
     { id: "e_name", label: "Events", width: "220px" },
-    { id: "e_date", label: "Date", width: "170px" },
+    {
+      id: "e_date",
+      label: "Date",
+      format: (value) => `${formatToCDT(value)} CDT`,
+      width: "170px",
+    },
     { id: "e_address", label: "Venue", width: "160px" },
     {
       id: "tp_section",
@@ -126,7 +133,7 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
         return (
           <Select
             value={
-              value === true ? "Valid" : value === false ? "Invalid" : "Select"
+              value ? "Valid" : value ? "Invalid" : "Select"
             }
             onChange={handleChange}
             size="small"
@@ -162,7 +169,12 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
     },
     { id: "full_name", label: "User Name", width: "120px" },
     { id: "u_email_id", label: "Email" },
-    { id: "e_date_time_zone", label: "Period Left", width: "130px" },
+    {
+  id: "e_date_time_zone",
+  label: "Period Left",
+  format: (value) => calculateDaysLeft(value),
+  width: "130px",
+}
   ];
   if (loading){
     return <div className="circular-progress"><CircularProgress/></div>;

@@ -4,6 +4,7 @@ import SignInLogo from "../../assets/images/Quickasystlogo.svg";
 import { signIn } from "@aws-amplify/auth";
 import "./SignIn.scss";
 import { useNavigate } from "react-router-dom";
+import { showErrorToast, showSuccessToast } from "../../components/CustomToast/CustomToast";
 const SignIn = () => {
   type FormValue = {
     email: string;
@@ -53,16 +54,13 @@ const SignIn = () => {
     formState: { errors },
   } = useForm<FormValue>();
   const onSubmit = async (data: FormValue) => {
-    try {
-      console.log('initial step of sign ',data);
-      
+    try {      
       const { email, password } = data;
       const user = await signIn({ username: email,  password });
-      console.log("User signed in successfully:", user);
+      showSuccessToast('Signed in successfully');
       navigate("/dashboard");
     } catch (error) {
-      console.error("Error signing in:", error);
-      
+      showErrorToast('Error signin in');
     }
   };
   return (

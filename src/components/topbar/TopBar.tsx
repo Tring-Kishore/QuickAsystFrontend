@@ -8,6 +8,7 @@ import './TopBar.scss';
 import ProfileMenu from '../menuitems/ProfileMenu';
 import MobileMenu from '../mobileMenu/MobileMenu';
 import sidebarsmalllogo from '../../assets/images/QuickAsystLogosidebar.svg';
+import { CircularProgress } from '@mui/material';
 const TopBar = () => {
   const { data, loading , error } = useQuery(GET_USER_PROFILE);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +16,7 @@ const TopBar = () => {
   const toggleProfileMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
   if (loading){
-     return <div className='topbar-outer-class'>Loading...</div>
+     return <div className='circular-progress'><CircularProgress/></div>
     }
   if(error){
      return <div> error </div>

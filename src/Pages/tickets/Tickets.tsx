@@ -11,6 +11,7 @@ import DelistReturn from "./delistReturn/DelistReturn";
 import DelistUnsold from "./delistUnsold/DelistUnsold";
 import ListTickets from "./listTickets/ListTickets";
 import SoldTickets from "./soldTickets/SoldTickets";
+import { showInfoToast } from "../../components/CustomToast/CustomToast";
 const Tickets = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -40,7 +41,7 @@ const Tickets = () => {
   };
   const handleBulkAction = async (action: string) => {
     if (selectedTicketIds.length === 0) {
-      alert("Please select at least one ticket");
+      showInfoToast("Please select at least one ticket");
       handleClose();
       return;
     }

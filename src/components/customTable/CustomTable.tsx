@@ -106,10 +106,12 @@ const CustomTable = <T,>({
                 </TableCell>
               )}
               {columns.map((column) => (
-                <TableCell key={column.id} style={{ width: column.width }}>
-                  <div className="column-header">
+                <TableCell key={column.id} >
+                  <div className="column-header" style={{ width: column.width }}>
                     {column.label}
-                    <img src={SortIcon} alt="Sort" className="sort-icon" />
+                    {column.id!=='tp_section' && (
+                      <img src={SortIcon} alt="Sort" className="sort-icon" />
+                    )}
                   </div>
                 </TableCell>
               ))}

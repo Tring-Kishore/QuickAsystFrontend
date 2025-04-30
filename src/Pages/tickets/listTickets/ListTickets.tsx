@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import { GET_LIST_TICKETS, ListTicket } from "./ListTicketsAPI/ListTicketsAPI";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
 import { CircularProgress } from "@mui/material";
+import { formatToCDT } from "../../../utils/DateFomatter";
 const useListTickets = (pageSize: number, pageOffset: number) => {
   const { loading, error, data, refetch } = useQuery(GET_LIST_TICKETS, {
     variables: {
@@ -38,9 +39,14 @@ const ListTickets = () => {
     setPage(1);
   };
   const columns: Column<ListTicket>[] = [
-    { id: "e_name", label: "Event" },
-    { id: "e_date", label: "Date" },
-    { id: "e_address", label: "Venue" },
+    { id: "e_name", label: "Event",width:'220px' },
+    {
+          id: "e_date",
+          label: "Date",
+          format: (value) => `${formatToCDT(value)} CDT`,
+          width: "170px",
+        },
+    { id: "e_address", label: "Venue",width:'160px' },
     {
       id: "tp_section",
       label: (
@@ -62,10 +68,8 @@ const ListTickets = () => {
       ),
       width: "200px",
     },
-    { id: "tp_row", label: "Row" },
-    { id: "tp_seat_no", label: "Seat No" },
-    { id: "tp_status", label: "Status" },
-    { id: "u_full_name", label: "User Name" },
+    
+    { id: "u_full_name", label: "User Name",width:'120px' },
     { id: "u_email_id", label: "Email" },
     { id: "tp_list_price", label: "Price" },
   ];

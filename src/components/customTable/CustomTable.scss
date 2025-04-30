@@ -54,6 +54,7 @@
     font-weight: 700;
     font-size: 14px;
     line-height: 21px;
+    padding: 6px 16px;
   }
   .sticky-actions {
     text-align: center;
@@ -119,4 +120,7 @@
     background-color: var(--mui-palette-primary-main);
     color: white;
   }
+}
+.MuiPaginationItem-root{
+  padding: 6px 16px;
 }
