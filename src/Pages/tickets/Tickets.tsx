@@ -100,6 +100,10 @@ const Tickets = () => {
         case 'Invalid':
           isValid = false;
           break;
+        case 'Publish':
+          break;
+        case 'Return':
+          break;
       }
       if (isValid !== null) {
         await updateTicketStatus({
@@ -181,7 +185,8 @@ const Tickets = () => {
                 >
                   <MenuItem onClick={() => handleBulkAction('Valid')}>Valid</MenuItem>
                   <MenuItem onClick={() => handleBulkAction('Invalid')}>Invalid</MenuItem>
-                  
+                  <MenuItem onClick={() => handleBulkAction('Publish')}>Publish</MenuItem>
+                  <MenuItem onClick={() => handleBulkAction('Return')}>Return</MenuItem>
                 </Menu>
               </>
             )}

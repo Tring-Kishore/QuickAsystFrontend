@@ -114,7 +114,7 @@ const Account = () => {
             u_first_name: formData.firstName,
             u_last_name: formData.lastName,
             u_phone_number: formData.phoneNumber,
-            u_avatar_url: newFileName  // Use the new file name here
+            u_avatar_url: newFileName
           }
         }
       });
