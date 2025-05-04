@@ -56,7 +56,7 @@ const SignIn = () => {
   const onSubmit = async (data: FormValue) => {
     try {      
       const { email, password } = data;
-      const user = await signIn({ username: email,  password });
+      await signIn({ username: email,  password });
       showSuccessToast('Signed in successfully');
       navigate("/dashboard");
     } catch (error) {

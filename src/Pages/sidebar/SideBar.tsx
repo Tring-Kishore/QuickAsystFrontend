@@ -48,6 +48,7 @@ const SideBar: React.FC = () => {
     }
   }, [location]);
   return (
+    <>
     <div className={`sidepanel ${isOpen ? 'open' : ''}`}>
       <div className='sidebar-logo'>
         <img src={isOpen ? logo : sidebarsmalllogo} alt="quick asyst logo"/>
@@ -70,10 +71,12 @@ const SideBar: React.FC = () => {
           </div>
         ))}
       </div>
-        <div className="toggle-btn" onClick={toggleNav}>
-          {isOpen ? <ArrowBackIosNewIcon/> : <ArrowForwardIosIcon/>}
-        </div>
+        
     </div>
+    <div className={`toggle-btn ${isOpen ? 'open' : ''}`} onClick={toggleNav}>
+      {isOpen ? <ArrowBackIosNewIcon/> : <ArrowForwardIosIcon/>}
+    </div>
+    </>
   );
 };
 

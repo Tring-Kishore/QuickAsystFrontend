@@ -53,7 +53,7 @@ const ProfileMenu: React.FC<ProfileMenuProps> = ({ onItemClick }) => {
     onItemClick();
     if (item.text === 'Sign Out') {
       signOut({ global: true })
-        .then(() => window.location.href = '/signin')
+        .then(() => navigate('/signin'))
         .catch(error => console.error('Error signing out:', error));
     }
     if (item.text === 'Change Password') {

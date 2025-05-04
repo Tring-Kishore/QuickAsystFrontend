@@ -1,30 +1,76 @@
 import React, { useState } from "react";
-import { Box, Tab, Tabs, Button, Menu, MenuItem, Popover, CircularProgress } from "@mui/material";
+import { Box, Tab, Tabs, Button, Menu, MenuItem, Popover} from "@mui/material";
 import { FilterList as FilterIcon} from "@mui/icons-material";
 import { useMutation, useQuery } from '@apollo/client';
 import "./Tickets.scss";
 import ManageTickets from "./manageTickets/ManageTickets";
 import bulkactionicon from "../../assets/images/bulkactionicon.svg";
-// import CustomDialogue from "../../components/customDialogue/CustomDialogue";
+import CustomDialogue from "../../components/customDialogue/CustomDialogue";
 import { UPDATE_TICKET_STATUS,GET_MANAGE_TICKETS } from "./manageTickets/manageTicketsAPI/ManageTicketsAPI";
 import DelistReturn from "./delistReturn/DelistReturn";
 import DelistUnsold from "./delistUnsold/DelistUnsold";
 import ListTickets from "./listTickets/ListTickets";
 import SoldTickets from "./soldTickets/SoldTickets";
-import { showInfoToast } from "../../components/CustomToast/CustomToast";
 const Tickets = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [filterAnchorEl, setFilterAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedTicketIds, setSelectedTicketIds] = useState<string[]>([]);
+  const [filters, setFilters] = useState({
+    leagueId: null as string | null,
+    validationStatus: null as boolean | null,
+    dateRange: null as string | null,
+    startDate: null as string | null,
+  endDate: null as string | null,
+  daysLeft: null as number | null, 
+  listStatus: null as string | null,
+  soldTicketsStatus : null as string | null,
+  soldTicketsType: null as 'Voided_Payout' | 'Unvoided_Payout' | null
+  });
   const [updateTicketStatus] = useMutation(UPDATE_TICKET_STATUS);
   const {  refetch } = useQuery(GET_MANAGE_TICKETS, {
     fetchPolicy: 'network-only',
   });
   const bulkActionOpen = Boolean(anchorEl);
   const filterOpen = Boolean(filterAnchorEl);
+  const handleFilterApply = (newFilters: {
+    leagueId: string | null;
+    validationStatus: boolean | null;
+    dateRange: string | null;
+    startDate: string | null;
+    endDate: string | null;
+    daysLeft: number | null;
+    listStatus: string | null;
+    soldTicketsStatus : string | null;
+    soldTicketsType: 'Voided_Payout' | 'Unvoided_Payout' | null;
+  }) => {
+    setFilters({
+      ...filters,
+      leagueId: newFilters.leagueId,
+      validationStatus: newFilters.validationStatus,
+      dateRange: newFilters.dateRange,
+      startDate: newFilters.startDate,
+      endDate: newFilters.endDate,
+      daysLeft: newFilters.daysLeft,
+      listStatus: newFilters.listStatus,
+      soldTicketsStatus : newFilters.soldTicketsStatus,
+      soldTicketsType : newFilters.soldTicketsType
+    });
+    setFilterAnchorEl(null);
+  };
   const handleTabChange = (event: any, newValue: number) => {
     setActiveTab(newValue);
+    setFilters({
+      leagueId: null,
+      validationStatus: null,
+      dateRange: null,
+      startDate: null,
+      endDate: null,
+      daysLeft: null,
+      listStatus: null,
+      soldTicketsStatus: null,
+      soldTicketsType : null
+    });
   };
   const handleSelectionChange = (selectedIds: string[]) => {
     setSelectedTicketIds(selectedIds);
@@ -41,7 +87,7 @@ const Tickets = () => {
   };
   const handleBulkAction = async (action: string) => {
     if (selectedTicketIds.length === 0) {
-      showInfoToast("Please select at least one ticket");
+      alert("Please select at least one ticket");
       handleClose();
       return;
     }
@@ -53,10 +99,6 @@ const Tickets = () => {
           break;
         case 'Invalid':
           isValid = false;
-          break;
-        case 'Publish':
-          break;
-        case 'Return':
           break;
       }
       if (isValid !== null) {
@@ -79,16 +121,20 @@ const Tickets = () => {
       case 0:
         return (
          <ManageTickets 
-             onSelectionChange={handleSelectionChange} />
+             onSelectionChange={handleSelectionChange} filters={filters} />
         );
       case 1:
-        return <ListTickets/>;
+        return <ListTickets filters={filters}/>;
       case 2:
-        return <SoldTickets/>;
+        return <SoldTickets filters={{
+          ...filters,
+          soldTicketsStatus: filters.soldTicketsStatus,
+          soldTicketsType: filters.soldTicketsType
+        }} />;
       case 3:
-        return <DelistReturn />;
+        return <DelistReturn filters={filters} />;
       case 4:
-        return <DelistUnsold/>;
+        return <DelistUnsold filters={filters}/>;
       default:
         return null;
     }
@@ -135,8 +181,7 @@ const Tickets = () => {
                 >
                   <MenuItem onClick={() => handleBulkAction('Valid')}>Valid</MenuItem>
                   <MenuItem onClick={() => handleBulkAction('Invalid')}>Invalid</MenuItem>
-                  <MenuItem onClick={() => handleBulkAction('Publish')}>Publish</MenuItem>
-                  <MenuItem onClick={() => handleBulkAction('Return')}>Return</MenuItem>
+                  
                 </Menu>
               </>
             )}
@@ -155,7 +200,7 @@ const Tickets = () => {
               anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
               transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-              {/* <CustomDialogue onActiveTabs={activeTab} /> */}
+              <CustomDialogue onActiveTabs={activeTab} onApplyFilters={handleFilterApply} onClose={() => setFilterAnchorEl(null)} />
             </Popover>
           </div>
         </div>

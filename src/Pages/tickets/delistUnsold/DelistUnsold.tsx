@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
 import { FILTER_UNSOLD_TICKETS_QUERY } from "./delistUnsoldAPI/DelistUnsoldAPI";
@@ -15,25 +15,46 @@ interface FilterUnsoldTicket {
   u_email_id: string;
   e_date_time_zone?: string;
 }
-const DelistUnsold: React.FC = () => {
+interface DelistUnsoldProps {
+  filters: {
+    leagueId: string | null;
+    startDate: string | null;
+    endDate: string | null;
+  };
+}
+const DelistUnsold: React.FC<DelistUnsoldProps> = ({ filters }) => {
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const { data, loading, error } = useQuery(FILTER_UNSOLD_TICKETS_QUERY, {
+  const [sortConfig, setSortConfig] = useState<{
+      key: string;
+      direction: 'asc' | 'desc';
+    }>({ key: 'tp_updated_at', direction: 'desc' });
+  
+    const handleSortChange = (sortBy: string, sortDirection: 'asc' | 'desc') => {
+      setSortConfig({ key: sortBy, direction: sortDirection });
+    };
+  const { data, loading, error , refetch } = useQuery(FILTER_UNSOLD_TICKETS_QUERY, {
     variables: {
-      enddate: null,
-      startdate: null,
-      leagueId: null,
+      enddate: filters.endDate || null,
+      startdate: filters.startDate || null,
+      leagueId: filters.leagueId || null,
       ticketId: null,
       ticketPlacementId: null,
       array_tpid: null,
       pageSize: rowsPerPage,
       pageOffset: (page - 1) * rowsPerPage,
-      order_by: [{ e_name: "asc" }],
+      order_by: [
+        { [sortConfig.key]: sortConfig.direction },
+        { tp_id: 'asc' }
+      ],
       search_event: "%",
       ticketStatus: null,
     },
     fetchPolicy: "network-only",
   });
+  useEffect(() => {
+      refetch();
+    }, [filters, refetch]);
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
@@ -42,16 +63,16 @@ const DelistUnsold: React.FC = () => {
     setPage(1);
   };
   const columns: Column<FilterUnsoldTicket>[] = [
-    { id: "e_name", label: "Events", width: "220px" },
-    { id: "e_date", label: "Date", width: "170px" },
-    { id: "e_address", label: "Venue", width: "160px" },
+    { id: "e_name", label: "Events", className:'column-events' },
+    { id: "e_date", label: "Date", className:'column-date' },
+    { id: "e_address", label: "Venue", className:'column-venue' },
     {
       id: "tp_section",
       label: (
         <div className="ticket-placement-header">
           <div className="main-header">Ticket Placement</div>
           <div className="sub-headers">
-            <span>Sec</span>
+            <span>Section</span>
             <span>Row</span>
             <span>Seat</span>
           </div>
@@ -64,9 +85,9 @@ const DelistUnsold: React.FC = () => {
           <span>{row.tp_seat_no}</span>
         </div>
       ),
-      width: "200px",
+      className:'column-ticket-placement'
     },
-    { id: "u_full_name", label: "User Name", width: "120px" },
+    { id: "u_full_name", label: "User Name", className:'column-user-name' },
     { id: "u_email_id", label: "Email" },
   ];
   if (loading) {
@@ -76,7 +97,7 @@ const DelistUnsold: React.FC = () => {
     return <div>Error loading unsold tickets</div>;
   }
   return (
-    <div className="fullheight">
+    <div className="manageTicket-fullheight">
       <CustomTable
         columns={columns}
         data={data?.filterUnsoldTickets || []}
@@ -88,6 +109,7 @@ const DelistUnsold: React.FC = () => {
         totalCount={data?.filterUnsoldTickets_aggreagate?.aggregate?.count || 0}
         hideCheckbox={true}
         hideActions={true}
+        onSortChange={handleSortChange}
       />
     </div>
   );

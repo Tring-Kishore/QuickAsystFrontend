@@ -92,6 +92,26 @@
               border: 3px solid white;
               object-fit: cover;
             }
+
+            .profle-edit{
+              position: relative;
+              .closeIcon{
+                width: 32px;
+                height: 32px;
+                border: none;
+                position: absolute;
+                left: 116px;
+              }
+              p{
+                position: absolute;
+                top: 75px;
+                left: 60px;
+                color: white;
+                font-family: 'Glegoo',serif;
+                font-weight: 700;
+                font-size: 12px;
+              }
+            }
           }
         }
         .divider-2 {
@@ -255,6 +275,9 @@
         }
       }
     }
+  }
+  .image-upload-input{
+    display: none;
   }
   @media screen and (max-width: 800px) {
     .account-profile{

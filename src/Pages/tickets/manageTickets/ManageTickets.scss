@@ -32,8 +32,6 @@
     justify-content: space-between;
     span {
       flex: 1;
-      font-size: 0.8em;
-      color: #666;
     }
   }
 }
@@ -51,4 +49,26 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.select-validate {
+  .MuiOutlinedInput-notchedOutline {
+    border: none !important;
+  }
+
+  .MuiOutlinedInput-root {
+    box-shadow: none !important;
+  }
+
+  fieldset {
+    border: none !important;
+  }
+}
+.custom-select-icon{
+  color: #5d75f8;
+}
+.sub-headers{
+  span{
+    font-size: 14px;
+
+  }
 }

@@ -12,9 +12,18 @@ const InputField: React.FC<InputFieldProps> = (props) => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  const inputType = props.name === 'password' 
-    ? (showPassword ? 'text' : 'password') 
-    : props.type;
+  let inputType;
+  if(props.name === "password"){
+    if(showPassword){
+      inputType = 'text'
+    }
+    else{
+      inputType = 'password'
+    }
+  }
+  else{
+    inputType = 'text'
+  }
   return (
     <div className={`input-container ${containerClassName || ''}`}>
       <input
@@ -28,10 +37,9 @@ const InputField: React.FC<InputFieldProps> = (props) => {
           className="password-toggle"
           onClick={togglePasswordVisibility}
         >
-          <img
+          <img className='image-password'
             src={showPassword ? eyeCloseIcon : eyeOpenIcon}
-            width={20}
-            height={20}
+            
           />
         </button>
       )}

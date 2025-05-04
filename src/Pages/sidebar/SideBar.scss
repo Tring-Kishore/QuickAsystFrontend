@@ -60,56 +60,65 @@
             }
         }
     }
-        .toggle-btn{
-            position: relative;
-            left: 66px;
-            bottom: 85px;
-            border-radius: 50%;
-            height: 22px;
-            width: 22px;
-            padding: 4px;
-            background-color: #f9f9fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: left 0.5s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
+        
       &.open {
         width: 234px;
-        .toggle-btn{
-          left: 220px;
-        }
       }
-    .closebtn {
-      position: absolute;
-      top: 0;
-      right: 25px;
-      font-size: 36px;
-      margin-left: 50px;
-      background: none;
-      border: none;
-      color: #818181;
-      cursor: pointer;
-      &:hover {
-        color: #f1f1f1;
-      }
-    }
   }
-  .openbtn {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: #111;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    &:hover {
-      background-color: #444;
-    }   
+  
+
+.toggle-btn{
+  position: absolute;
+  left: 68px;
+  top: 132px;
+  border-radius: 50%;
+  height: 22px;
+  width: 22px;
+  padding: 4px;
+  background-color: #f9f9fa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: left 0.5s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  &.open {
+    left: 218px;
+    
+  }
+.closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+  background: none;
+  border: none;
+  color: #818181;
+  cursor: pointer;
+  &:hover {
+    color: #f1f1f1;
+  }
+}
+
+
+}
+.openbtn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  &:hover {
+    background-color: #444;
+  }   
 }
 @media screen and (max-width: 740px) {
   .sidepanel{
+    display: none;
+  }
+  .toggle-btn{
     display: none;
   }
 }
