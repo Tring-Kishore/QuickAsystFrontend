@@ -1,64 +1,201 @@
-
-import React from 'react';
-import { useQuery } from '@apollo/client';
-import CustomTable, { Column } from '../../../components/customTable/CustomTable';
-import { GET_MANAGE_TICKETS, ManageTicket } from './ManageTicketsAPI';
-import { Chip } from '@mui/material';
-import './ManageTickets.scss';
-const ManageTickets = () => {
-  const { loading, error, data } = useQuery(GET_MANAGE_TICKETS, {
+import React, { useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/client";
+import { Chip, MenuItem, Select } from "@mui/material";
+import CustomTable, { Column } from "../../../components/customTable/CustomTable";
+import {
+  GET_MANAGE_TICKETS,
+  UPDATE_TICKET_STATUS,
+  ManageTicket,
+} from "./manageTicketsAPI/ManageTicketsAPI";
+import "./ManageTickets.scss";
+import CircularProgress from '@mui/material/CircularProgress';
+import { calculateDaysLeft, formatToCDT } from "../../../utils/DateFomatter";
+interface ManageTicketsProps {
+  onSelectionChange: (selectedIds: string[]) => void;
+}
+const useManageTickets = (pageSize: number, pageOffset: number) => {
+  const { loading, error, data, refetch } = useQuery(GET_MANAGE_TICKETS, {
     variables: {
-      pageSize: 10,
-      pageOffset: 0,
-      
+      pageSize,
+      pageOffset,
+      search_event: "%",
+      ticketStatus: null,
+      ticketId: null,
+      tpId: null,
+      array_tpid: null,
+      day: null,
+      enddate: null,
+      leagueId: null,
+      startdate: null,
+      order_by: null,
     },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: "network-only",
   });
 
+  const [updateTicketStatus] = useMutation(UPDATE_TICKET_STATUS);
+  const tickets = data?.filtermanagetickets || [];
+  const totalCount = data?.filtermanagetickets_aggregate?.aggregate?.count || 0;
+  const handleStatusChange = async (
+    ticketId: string,
+    newValidityStatus: boolean | null
+  ) => {
+    try {
+      await updateTicketStatus({
+        variables: {
+          ticketPlacementId: [ticketId],
+          isValid: newValidityStatus === null ? null : newValidityStatus,
+          isUndoRequest: false,
+        },
+      });
+      refetch();
+    } catch (error) {
+      console.error("Error updating ticket status:", error);
+      throw error;
+    }
+  };
+  return {
+    loading,
+    error,
+    tickets,
+    totalCount,
+    handleStatusChange,
+    refetch,
+  };
+};
+const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
+  const [page, setPage] = React.useState(1);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const {
+    loading,
+    error,
+    tickets,
+    totalCount,
+    handleStatusChange,
+  } = useManageTickets(rowsPerPage, (page - 1) * rowsPerPage);
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+  const handleRowsPerPageChange = (newRowsPerPage: number) => {
+    setRowsPerPage(newRowsPerPage);
+    setPage(1);
+  };
+  const handleSelectionChange = (ids: (string | number)[]) => {
+    onSelectionChange(ids as string[]);
+  };
+  const getStatusFromValidity = (validityStatus: boolean | null): string => {
+    if (validityStatus === null) return "ToBeVerified";
+    return validityStatus ? "Verified" : "Delist";
+  };
   const columns: Column<ManageTicket>[] = [
-    { id: 'e_name', label: 'Event Name' },
-    { id: 'l_name', label: 'League Name' },
-    { id: 'e_date', label: 'Event Date' },
-    { id: 'tp_section', label: 'Section' },
-    { id: 'tp_row', label: 'Row' },
-    { id: 'tp_seat_no', label: 'Seat No' },
+    { id: "e_name", label: "Events", width: "220px" },
     {
-        id: "tp_status",
-        label: "Status",
-        format: (value: string) => (
-          <Chip className='custom-chip'
-            label={value}
-            color={
-              value === "Verified"
-                ? "success"
-                : value === "Delist"
-                ? "error"
-                : value === "ToBeVerified"
-                ? "warning"
-                : "default"
+      id: "e_date",
+      label: "Date",
+      format: (value) => `${formatToCDT(value)} CDT`,
+      width: "170px",
+    },
+    { id: "e_address", label: "Venue", width: "160px" },
+    {
+      id: "tp_section",
+      label: (
+        <div className="ticket-placement-header">
+          <div className="main-header">Ticket Placement</div>
+          <div className="sub-headers">
+            <span>Sec</span>
+            <span>Row</span>
+            <span>Seat</span>
+          </div>
+        </div>
+      ),
+      format: (_, row) => (
+        <div className="ticket-placement-values">
+          <span>{row.tp_section}</span>
+          <span>{row.tp_row}</span>
+          <span>{row.tp_seat_no}</span>
+        </div>
+      ),
+      width: "200px",
+    },
+    {
+      id: "tp_validity_status",
+      label: "Validate",
+      format: (value: boolean | null, row: ManageTicket) => {
+        const handleChange = async (event: any) => {
+          let newValue: boolean | null = null;
+
+          if (event.target.value === "Valid") {
+            newValue = true;
+          } else if (event.target.value === "Invalid") {
+            newValue = false;
+          }
+          await handleStatusChange(row.tp_id, newValue);
+        };
+        return (
+          <Select
+            value={
+              value ? "Valid" : value ? "Invalid" : "Select"
             }
+            onChange={handleChange}
+            size="small"
+          >
+            <MenuItem value="Select">Select</MenuItem>
+            <MenuItem value="Valid">Valid</MenuItem>
+            <MenuItem value="Invalid">Invalid</MenuItem>
+          </Select>
+        );
+      },
+      width: "140px",
+    },
+    {
+      id: "tp_status",
+      label: "Status",
+      format: (_, row) => {
+        const status = getStatusFromValidity(row.tp_validity_status);
+        const statusValue = status.toLowerCase().replace(/\s+/g, "");
+        const displayText =
+          status === "ToBeVerified" ? "To Be Verified" : status;
+
+        return (
+          <Chip
+            className="custom-chip"
+            data-status={statusValue}
+            label={displayText}
             size="medium"
             variant="filled"
           />
-        ),
+        );
       },
-    { id: 'full_name', label: 'User Name' },
-    { id: 'u_email_id', label: 'Email' },
-    
+      width: "140px",
+    },
+    { id: "full_name", label: "User Name", width: "120px" },
+    { id: "u_email_id", label: "Email" },
+    {
+  id: "e_date_time_zone",
+  label: "Period Left",
+  format: (value) => calculateDaysLeft(value),
+  width: "130px",
+}
   ];
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
+  if (loading){
+    return <div className="circular-progress"><CircularProgress/></div>;
+  } 
+  if (error){
+    return <div>Error loading tickets</div>;
+  } 
   return (
-    <div>
-      <CustomTable 
-        columns={columns} 
-        data={data?.filtermanagetickets || []} 
-        getRowId={(row: ManageTicket) => row.tp_id} 
+    <div className="manageTicket-fullheight">
+      <CustomTable
+        columns={columns}
+        data={tickets}
+        getRowId={(row: ManageTicket) => row.tp_id}
+        onSelectionChange={handleSelectionChange}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handlePageChange}
+        onRowsPerPageChange={handleRowsPerPageChange}
+        totalCount={totalCount}
       />
     </div>
   );
 };
-
 export default ManageTickets;

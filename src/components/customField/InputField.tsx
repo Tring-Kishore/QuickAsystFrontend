@@ -2,23 +2,19 @@ import React, { useState } from 'react';
 import './InputField.scss';
 import eyeCloseIcon from '../../assets/images/eyeclose.svg';
 import eyeOpenIcon from '../../assets/images/eye.svg';
-
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: boolean; 
   containerClassName?: string;
 }
-
 const InputField: React.FC<InputFieldProps> = (props) => {
   const [showPassword, setShowPassword] = useState(false);
-  const { containerClassName, ...inputProps } = props;
+  const { containerClassName} = props;
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
   const inputType = props.name === 'password' 
     ? (showPassword ? 'text' : 'password') 
     : props.type;
-
   return (
     <div className={`input-container ${containerClassName || ''}`}>
       <input
@@ -42,5 +38,4 @@ const InputField: React.FC<InputFieldProps> = (props) => {
     </div>
   );
 };
-
 export default InputField;

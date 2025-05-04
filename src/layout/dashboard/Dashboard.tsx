@@ -3,8 +3,6 @@ import SideBar from '../../Pages/sidebar/SideBar';
 import { Outlet } from 'react-router-dom';
 import './Dashboard.scss';
 import TopBar from '../../components/topbar/TopBar';
-import Account from '../../Pages/account/Account';
-
 const Dashboard: React.FC = () => {
   return (
     <div className='outer-class-dashboard'>
@@ -16,5 +14,4 @@ const Dashboard: React.FC = () => {
   </div>
   );
 };
-
 export default Dashboard;

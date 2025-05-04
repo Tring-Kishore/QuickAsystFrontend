@@ -6,9 +6,12 @@ import Dashboard from './layout/dashboard/Dashboard';
 import Tickets from './Pages/tickets/Tickets';
 import Content from './Pages/content/Content';
 import Account from './Pages/account/Account';
+import { ToastNotification } from './components/CustomToast/CustomToast';
+
 
 function App() {
   return (
+    <>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
@@ -27,6 +30,8 @@ function App() {
         <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </BrowserRouter>
+    <ToastNotification />
+</>
   );
 }
 export default App;

@@ -4,12 +4,12 @@ import SignInLogo from "../../assets/images/Quickasystlogo.svg";
 import { signIn } from "@aws-amplify/auth";
 import "./SignIn.scss";
 import { useNavigate } from "react-router-dom";
+import { showErrorToast, showSuccessToast } from "../../components/CustomToast/CustomToast";
 const SignIn = () => {
   type FormValue = {
     email: string;
     password: string;
   };
-
   const inputfields: {
     id: string;
     name: keyof FormValue;
@@ -47,28 +47,22 @@ const SignIn = () => {
       },
     },
   ];
-
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValue>();
-
   const onSubmit = async (data: FormValue) => {
-    try {
-      console.log('initial step of sign ',data);
-      
+    try {      
       const { email, password } = data;
-      const user = await signIn({ username: email, password: password });
-      console.log("User signed in successfully:", user);
+      const user = await signIn({ username: email,  password });
+      showSuccessToast('Signed in successfully');
       navigate("/dashboard");
     } catch (error) {
-      console.error("Error signing in:", error);
-      
+      showErrorToast('Error signin in');
     }
   };
-
   return (
     <div className="outer-class-signin">
       <div className="image-div">
@@ -84,7 +78,6 @@ const SignIn = () => {
         </div>
       </div>
       <div className="content">
-
       <div className="content-signin">
         <div className="signin-logo">
           <img src={SignInLogo} alt="signin logo" />
@@ -123,5 +116,4 @@ const SignIn = () => {
     </div>
   );
 };
-
 export default SignIn;

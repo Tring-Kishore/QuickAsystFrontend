@@ -4,13 +4,14 @@ import profilepic from "../../assets/images/profilepic.jpg";
 import { GET_USER_PROFILE, EDIT_PROFILE } from "./accountAPI/AccountAPI";
 import { useQuery, useMutation } from "@apollo/client";
 import InputField from "../../components/customField/InputField";
+import { CircularProgress } from "@mui/material";
+import { showErrorToast } from "../../components/CustomToast/CustomToast";
 
 const Account = () => {
   const { data, loading, error } = useQuery(GET_USER_PROFILE);
   const [editProfile] = useMutation(EDIT_PROFILE);
   const [isEditClick, setIsEditClick] = useState(false);
   const [profileImageUrl, setProfileImageUrl] = useState(profilepic);
-  
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -18,7 +19,6 @@ const Account = () => {
     email: "",
     avatarUrl: ""
   });
-
   useEffect(() => {
     if (data?.get_user_profile?.[0]) {
       const user = data.get_user_profile[0];
@@ -29,22 +29,18 @@ const Account = () => {
         email: user.u_email_id || "",
         avatarUrl: user.u_avatar_url || ""
       });
-
       const imageKey = user.u_avatar_url;
       const devlink = process.env.REACT_APP_DEV_LINK;
       setProfileImageUrl(imageKey ? `${devlink}${imageKey}` : profilepic);
     }
   }, [data]);
-
   const toggleEdit = () => setIsEditClick(!isEditClick);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
     setFormData({
       ...formData,
       [field]: e.target.value,
     });
   };
-
   const handleSave = async () => {
     try {
       await editProfile({
@@ -62,11 +58,10 @@ const Account = () => {
     } catch (err : any) {
       console.error("Error updating profile:", err);
       if (err.message.includes('user_u_phone_number_key')) {
-        alert('This phone number is already registered to another account');
+        showErrorToast('This phone number is already registered to another account');
       }
     }
   };
-
   const profileDetails = [
     {
       key: "fullName",
@@ -97,8 +92,12 @@ const Account = () => {
     },
   ];
 
-  if (loading) return <div className="topbar-outer-class">Loading...</div>;
-  if (error) return <div className="topbar-outer-class">Error loading profile</div>;
+  if (loading){
+     return <div className="circular-progress"><CircularProgress/></div>
+    }
+  if (error){
+     return <div className="topbar-outer-class">Error loading profile</div>
+    }
 
   return (
     <div className="account-outer-class">
@@ -127,9 +126,7 @@ const Account = () => {
                 {profileDetails.map((detail) => (
                   <div key={detail.key} className="account-profile-details">
                     <p className="account-details-key">{detail.label}</p>
-                    <div className="account-details-values">
                       <p className="account-details-value">{detail.value || "-"}</p>
-                    </div>
                   </div>
                 ))}
               </div>
@@ -177,5 +174,4 @@ const Account = () => {
     </div>
   );
 };
-
 export default Account;
