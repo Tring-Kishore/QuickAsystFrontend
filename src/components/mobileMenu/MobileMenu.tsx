@@ -5,11 +5,10 @@ import './MobileMenu.scss';
 import { useNavigate } from 'react-router-dom';
 
 interface MobileMenuProps {
-  isOpen: boolean;
   onClose: () => void;
 }
 
-const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
+const MobileMenu: React.FC<MobileMenuProps> = ({ onClose }) => {
   const navigate = useNavigate();
 
   const handleItemClick = (path?: string) => {
@@ -20,7 +19,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className={`mobile-menu-container ${isOpen ? 'mobile-menu-open' : 'mobile-menu-closed'}`}>
+    <div className="mobile-menu-container">
       <div className="mobile-menu-content">
         <div className="mobile-menu-section">
           <h3 className="section-title">Menu</h3>

@@ -65,13 +65,12 @@ const TopBar = () => {
         </div>
       </div>
 
-      
-      <MobileMenu 
-        isOpen={isMobileMenuOpen}
-        onClose={toggleMobileMenu}
-      />
+      {isMobileMenuOpen && (
+        <MobileMenu 
+          onClose={toggleMobileMenu}
+        />
+      )}
     </>
   );
 };
-
 export default TopBar;
