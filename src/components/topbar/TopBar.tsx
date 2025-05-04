@@ -8,25 +8,16 @@ import './TopBar.scss';
 import ProfileMenu from '../menuitems/ProfileMenu';
 import sidebarsmalllogo from '../../assets/images/QuickAsystLogosidebar.svg';
 import { CircularProgress } from '@mui/material';
-import { sidebarItems } from '../../Pages/sidebar/SideBar';
-import { profileMenuItems } from '../menuitems/ProfileMenu';
 import { useNavigate } from 'react-router-dom';
+import MobileMenu from '../mobileMenu/MobileMenu';
 
 const TopBar = () => {
   const { data, loading, error } = useQuery(GET_USER_PROFILE);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const navigate = useNavigate();
 
   const toggleProfileMenu = () => setIsMenuOpen(!isMenuOpen);
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-
-  const handleMobileMenuItemClick = (path?: string) => {
-    if (path) {
-      navigate(path);
-    }
-    setIsMobileMenuOpen(false);
-  };
 
   if (loading) {
     return <div className='circular-progress'><CircularProgress /></div>
@@ -75,46 +66,10 @@ const TopBar = () => {
       </div>
 
       
-      {isMobileMenuOpen && (
-        <div className="mobile-menu-container">
-          <div className="mobile-menu-content">
-            <div className="mobile-menu-section">
-              <h3 className="section-title">Menu</h3>
-              <div className="options-list">
-                {sidebarItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="menu-option"
-                    onClick={() => handleMobileMenuItemClick(item.path)}
-                  >
-                    <div className="option-icon">
-                      <img src={item.icon} alt={item.altText} />
-                    </div>
-                    <div className="option-text">{item.name}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="mobile-menu-section">
-              <h3 className="section-title">Account</h3>
-              <div className="options-list">
-                {profileMenuItems.map((item, index) => (
-                  <div
-                    key={index}
-                    className="menu-option"
-                    onClick={() => handleMobileMenuItemClick(item.path)}
-                  >
-                    <div className="option-icon">
-                      <img src={item.icon} alt={item.text} />
-                    </div>
-                    <div className="option-text">{item.text}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      <MobileMenu 
+        isOpen={isMobileMenuOpen}
+        onClose={toggleMobileMenu}
+      />
     </>
   );
 };
