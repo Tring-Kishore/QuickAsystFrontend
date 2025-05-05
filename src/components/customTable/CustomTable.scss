@@ -1,92 +1,232 @@
 .custom-table-container {
   max-height: 80%;
   overflow-y: auto;
+  
   &::-webkit-scrollbar {
     height: 8px;
-    width: 8px;
+    width: 4px;
   }
+  
   &::-webkit-scrollbar-thumb {
     background-color: #c1c1c1;
     border-radius: 4px;
   }
-}
-.table-head-row {
-  background-color: #f9f9fa;
-  height: 48px;
-  .sticky-actions {
-    position: sticky;
-    top: 0;
-    right: 0;
-    background: white;
-    z-index: 3;
-    color: #9ca3af;
-    font-family: Glegoo, serif;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 21px;
+
+  .table-header-cell, .table-body-content {
+    &.column-events {
+      width: 220px;
+      min-width: 220px;
+    }
+    
+    &.column-date {
+      width: 170px;
+      min-width: 170px;
+    }
+    
+    &.column-venue {
+      width: 160px;
+      min-width: 160px;
+    }
+    
+    &.column-ticket-placement {
+      width: 200px;
+      min-width: 200px;
+    }
+    
+    &.column-validate {
+      width: 140px;
+      min-width: 140px;
+    }
+    
+    &.column-status {
+      width: 140px;
+      min-width: 140px;
+    }
+    
+    &.column-user-name {
+      width: 120px;
+      min-width: 120px;
+    }
+    
+    &.column-period-left {
+      width: 130px;
+      min-width: 130px;
+    }
   }
-}
-.table-checkbox {
-  color: grey;
-}
-.column-header {
-  display: flex;
-  align-items: center;
-  color: #9ca3af;
-  font-family: Glegoo, serif;
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 21px;
-  .sort-icon {
-    margin-left: 5px;
-  }
-}
-.column-cell {
-  width: auto;
-}
-.custom-table-rows {
-  height: 48px;
-  &:nth-of-type(even) {
+
+  .table-head-row {
     background-color: #f9f9fa;
-  }
-  .table-body-content {
-    font-family: Glegoo, serif;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 21px;
-    padding: 6px 16px;
-  }
-  .sticky-actions {
-    text-align: center;
-    position: sticky;
-    right: 0;
-    background: white;
-    z-index: 2;
-    color: #9ca3af;
-    font-family: Glegoo, serif;
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 21px;
-    .manage-ticket-publish-btn {
-      width: 104px;
-      height: 36px;
-      border: 1px solid #e3e5e8;
-      background-color: white;
-      color: #b9bdc6;
+    height: 48px;
+    
+    .sticky-actions {
+      position: sticky;
+      right: 0;
+      background: #f9f9fa;
+      z-index: 3;
+      color: #9ca3af;
       font-family: Glegoo, serif;
       font-weight: 700;
-      font-size: 12px;
-      line-height: 19px;
+      font-size: 14px;
+      line-height: 21px;
+      
       text-align: center;
-      cursor: not-allowed;
-      &.verified {
-        color: #5d75f8;
-        border-color: #5d75f8;
-        cursor: pointer;
+    }
+    
+    .checkbox {
+      color: #9ca3af;
+    }
+  }
+
+  .table-checkbox {
+    color: #9ca3af;
+  }
+
+  .column-header {
+    display: flex;
+    align-items: center;
+    color: #9ca3af;
+    font-family: Glegoo, serif;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+    cursor: pointer;
+    .sort-icon {
+      margin-left: 5px;
+    }
+  }
+
+  .custom-table-rows {
+    height: 48px;
+    
+    &:nth-of-type(even) {
+      background-color: #f9f9fa;
+      
+      .sticky-actions {
+        background-color: #f9f9fa;
       }
+    }
+    
+    .table-body-content {
+      font-family: Glegoo, serif;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 21px;
+      padding: 6px 16px;
+  
+    }
+    
+    .sticky-actions {
+      position: sticky;
+      right: 0;
+      background: white;
+      z-index: 2;
+      box-shadow: -4px 0 6px -1px rgba(0, 0, 0, 0.1);
+      padding: 6px 16px;
+      display: flex;
+      gap: 15px;
+      .editicon-class{
+        background: none;
+        border: none;
+        &.Verified{
+          border: 1px solid #5d75f8;
+        }
+      }
+      .sold-action-values-container{
+        width: 300px;
+
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        .sold-tickets-actions{
+          padding-right: 15px;
+          border-right: 2px solid #e3e5e8;
+          .dollar-icon{
+            width: 50px;
+            height: 50px;
+          }
+          .dollar-close{
+            position: relative;
+            right: 12px;
+          }
+        }
+      }
+      .action-buttons-container {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        
+        .action-btn {
+          min-width: 60px;
+          height: 36px;
+          padding: 0 8px;
+          border: 1px solid #e3e5e8;
+          background-color: white;
+          color: #e3e5e8;
+          font-family: Glegoo, serif;
+          font-weight: 700;
+          font-size: 12px;
+          line-height: 19px;
+          text-align: center;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: all 0.2s ease;
+          border-radius: 4px;
+          
+          &:hover {
+            background-color: #f5f7ff;
+          }
+          
+          &:active {
+            background-color: #ebefff;
+          }
+          
+          &:disabled {
+            color: #b9bdc6;
+            cursor: not-allowed;
+            background-color: white;
+          }
+        }
+        
+        .delist-btn{
+          color: #EF4444;
+        }
+        .sold-btn{
+          color: #22C55E;
+        }
+      }
+      
+      .manage-ticket-publish-btn {
+        width: 104px;
+        height: 36px;
+        border: 1px solid #e3e5e8;
+        background-color: white;
+        color: #b9bdc6;
+        font-family: Glegoo, serif;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 19px;
+        text-align: center;
+        cursor: not-allowed;
+        border-radius: 4px;
+        
+        &.verified {
+          color: #5d75f8;
+          border-color: #5d75f8;
+          cursor: pointer;
+          
+          &:hover {
+            background-color: #f5f7ff;
+          }
+        }
+      }
+    }
+    
+    .checkbox {
+      color: #9ca3af;
     }
   }
 }
+
 .pagination-container {
   display: flex;
   justify-content: space-between;
@@ -98,29 +238,73 @@
   z-index: 5;
   padding: 10px 16px;
   border-top: 1px solid #e0e0e0;
-}
-.rows-per-page-control {
-  display: flex;
-  align-items: center;
-}
-.rows-per-page-label {
-  margin-right: 8px;
-}
-.rows-per-page-select {
-  .MuiSelect-select {
-    padding-right: 24px;
-    padding-left: 8px;
+  
+  .rows-per-page-control {
+    display: flex;
+    align-items: center;
+    
+    .rows-per-page-label {
+      margin-right: 8px;
+      font-family: Glegoo, serif;
+      font-size: 14px;
+      color: #6b7280;
+    }
   }
+}
+.record-not-found{
+  display: flex;
+  justify-content: center;
+  font-family: Glegoo;
+  padding-top: 10px;
 }
 .custom-pagination {
   .MuiPaginationItem-root {
-    color: var(--mui-palette-text-primary);
-  }
-  .Mui-selected {
-    background-color: var(--mui-palette-primary-main);
-    color: white;
+    color: #6b7280;
+    font-family: Glegoo, serif;
+    
+    &.Mui-selected {
+      background-color: #5d75f8;
+      color: white;
+    }
   }
 }
-.MuiPaginationItem-root{
+
+.MuiTable-root,
+.MuiTableCell-root,
+.MuiTableRow-root,
+.MuiTableHead-root,
+.MuiTableBody-root {
+  border: none !important;
+  box-shadow: none;
+}
+
+.MuiPaginationItem-root {
   padding: 6px 16px;
+}
+
+.ticket-placement-header {
+  display: flex;
+  flex-direction: column;
+  
+  .main-header {
+    font-weight: 700;
+  }
+  
+  .sub-headers {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #9ca3af;
+  }
+}
+
+.ticket-placement-values {
+  display: flex;
+  justify-content: space-between;
+  
+  span {
+    flex: 1;
+    text-align: center;
+  }
 }

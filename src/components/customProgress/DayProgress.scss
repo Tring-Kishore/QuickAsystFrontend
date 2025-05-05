@@ -1,0 +1,63 @@
+
+.container {
+    width: 100%;
+    padding: 0 16px;
+  }
+  
+  .labelsContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  
+  .label {
+    font-size: 0.875rem;
+    color: rgba(0, 0, 0, 0.6);
+  }
+  
+  .sliderContainer {
+    position: relative;
+  }
+  
+  .customSlider {
+    height: 6px;
+    padding: 15px 0;
+  
+    .thumb {
+      height: 24px;
+      width: 24px;
+      background-color: #fff;
+      border: 2px solid #5D75F8;
+      border-radius: 0;
+      &:focus, &:hover, &.active {
+        box-shadow: 0 0 0 8px rgba(63, 81, 181, 0.16);
+      }
+    }
+  
+    .track {
+      height: 6px;
+      background-color: #5D75F8;
+      border: none;
+    }
+  
+    .rail {
+      height: 6px;
+      background-color: rgba(0, 0, 0, 0.12);
+      opacity: 1;
+      border-radius: 3px;
+    }
+  }
+  
+  .dayLabel {
+    position: absolute;
+    top: -14px;
+    transform: translateX(-50%);
+    
+    .labelBox {
+      background-color: #5D75F8;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+  }

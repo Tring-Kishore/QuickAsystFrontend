@@ -60,6 +60,7 @@ export const FILTER_SOLD_TICKETS = gql`
       tp_quick_cut_amount
       e_brand_name
       e_status
+      tp_payout_status
     }
     FilterSoldTickets_aggregate: filterlisttickets_aggregate(
       args: {

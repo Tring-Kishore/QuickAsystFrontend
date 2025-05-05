@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Chip, MenuItem, Select } from "@mui/material";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
@@ -10,31 +10,66 @@ import {
 import "./ManageTickets.scss";
 import CircularProgress from '@mui/material/CircularProgress';
 import { calculateDaysLeft, formatToCDT } from "../../../utils/DateFomatter";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
+interface Filters {
+  leagueId: string | null;
+  validationStatus: boolean | null;
+  dateRange: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  daysLeft: number | null;
+}
+
 interface ManageTicketsProps {
   onSelectionChange: (selectedIds: string[]) => void;
+  filters: Filters;
 }
-const useManageTickets = (pageSize: number, pageOffset: number) => {
+
+export interface SortConfig {
+  key: string;
+  direction: 'asc' | 'desc';
+}
+const getTicketStatus = (validationStatus: boolean | null): string | null => {
+  if (validationStatus === null) {
+    return null;
+  } else if (validationStatus) {
+    return "Verified";
+  } else {
+    return "Delist";
+  }
+};
+
+
+const useManageTickets = (
+  pageSize: number,
+  pageOffset: number,
+  filters: Filters,
+  orderBy: { [key: string]: string | 'asc' | 'desc' }[]
+) => {
   const { loading, error, data, refetch } = useQuery(GET_MANAGE_TICKETS, {
     variables: {
       pageSize,
       pageOffset,
       search_event: "%",
-      ticketStatus: null,
+      ticketStatus: getTicketStatus(filters.validationStatus),
       ticketId: null,
       tpId: null,
       array_tpid: null,
-      day: null,
-      enddate: null,
-      leagueId: null,
-      startdate: null,
-      order_by: null,
+      day: filters.daysLeft || null,
+      enddate: filters.endDate || null,
+      leagueId: filters.leagueId || null,
+      startdate: filters.startDate || null,
+      order_by: orderBy,
     },
     fetchPolicy: "network-only",
   });
 
   const [updateTicketStatus] = useMutation(UPDATE_TICKET_STATUS);
+
   const tickets = data?.filtermanagetickets || [];
   const totalCount = data?.filtermanagetickets_aggregate?.aggregate?.count || 0;
+
   const handleStatusChange = async (
     ticketId: string,
     newValidityStatus: boolean | null
@@ -48,11 +83,12 @@ const useManageTickets = (pageSize: number, pageOffset: number) => {
         },
       });
       refetch();
-    } catch (error) {
-      console.error("Error updating ticket status:", error);
-      throw error;
+    } catch (err) {
+      console.error("Error updating ticket status:", err);
+      throw err;
     }
   };
+
   return {
     loading,
     error,
@@ -62,46 +98,75 @@ const useManageTickets = (pageSize: number, pageOffset: number) => {
     refetch,
   };
 };
-const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
-  const [page, setPage] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+const ManageTickets = ({ onSelectionChange, filters }: ManageTicketsProps) => {
+  const [page, setPage] = useState<number>(1);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    key: 'tp_updated_at',
+    direction: 'desc',
+  });
+
+  const handleSortChange = (sortBy: string, sortDirection: 'asc' | 'desc') => {
+    setSortConfig({ key: sortBy, direction: sortDirection });
+  };
+
   const {
     loading,
     error,
     tickets,
     totalCount,
     handleStatusChange,
-  } = useManageTickets(rowsPerPage, (page - 1) * rowsPerPage);
+  } = useManageTickets(
+    rowsPerPage, 
+    (page - 1) * rowsPerPage,
+    filters,
+    [
+      { [sortConfig.key]: sortConfig.direction },
+      { tp_id: 'asc' }
+    ]
+  );
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
+
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(1);
   };
+
   const handleSelectionChange = (ids: (string | number)[]) => {
     onSelectionChange(ids as string[]);
   };
+
   const getStatusFromValidity = (validityStatus: boolean | null): string => {
-    if (validityStatus === null) return "ToBeVerified";
+    if (validityStatus === null) {
+      return "ToBeVerified";
+    } 
     return validityStatus ? "Verified" : "Delist";
   };
+
+  const CustomArrowIcon = () => (
+    <KeyboardArrowDownIcon className="custom-select-icon" />
+  );
+
   const columns: Column<ManageTicket>[] = [
-    { id: "e_name", label: "Events", width: "220px" },
+    { id: "e_name", label: "Events", className: 'column-events' },
     {
       id: "e_date",
       label: "Date",
       format: (value) => `${formatToCDT(value)} CDT`,
-      width: "170px",
+      className: 'column-date',
     },
-    { id: "e_address", label: "Venue", width: "160px" },
+    { id: "e_address", label: "Venue", className: 'column-venue' },
     {
       id: "tp_section",
       label: (
         <div className="ticket-placement-header">
           <div className="main-header">Ticket Placement</div>
           <div className="sub-headers">
-            <span>Sec</span>
+            <span>Section</span>
             <span>Row</span>
             <span>Seat</span>
           </div>
@@ -114,7 +179,7 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
           <span>{row.tp_seat_no}</span>
         </div>
       ),
-      width: "200px",
+      className: 'column-ticket-placement',
     },
     {
       id: "tp_validity_status",
@@ -122,7 +187,6 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
       format: (value: boolean | null, row: ManageTicket) => {
         const handleChange = async (event: any) => {
           let newValue: boolean | null = null;
-
           if (event.target.value === "Valid") {
             newValue = true;
           } else if (event.target.value === "Invalid") {
@@ -130,13 +194,15 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
           }
           await handleStatusChange(row.tp_id, newValue);
         };
+        
+        let selectValue = value === null ? "Select" : value ? "Valid" : "Invalid";
         return (
-          <Select
-            value={
-              value ? "Valid" : value ? "Invalid" : "Select"
-            }
+          <Select 
+            className="select-validate"
+            value={selectValue}
             onChange={handleChange}
             size="small"
+            IconComponent={CustomArrowIcon}
           >
             <MenuItem value="Select">Select</MenuItem>
             <MenuItem value="Valid">Valid</MenuItem>
@@ -144,7 +210,7 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
           </Select>
         );
       },
-      width: "140px",
+      className: 'column-validate',
     },
     {
       id: "tp_status",
@@ -165,21 +231,22 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
           />
         );
       },
-      width: "140px",
+      className: 'column-status',
     },
-    { id: "full_name", label: "User Name", width: "120px" },
+    { id: "full_name", label: "User Name", className: 'column-user-name' },
     { id: "u_email_id", label: "Email" },
     {
-  id: "e_date_time_zone",
-  label: "Period Left",
-  format: (value) => calculateDaysLeft(value),
-  width: "130px",
-}
+      id: "e_date_time_zone",
+      label: "Period Left",
+      format: (value: string) => calculateDaysLeft(value),
+      className: 'column-period-left'
+    }
   ];
-  if (loading){
-    return <div className="circular-progress"><CircularProgress/></div>;
+
+  if (loading) {
+    return <div className="circular-progress"><CircularProgress /></div>;
   } 
-  if (error){
+  if (error) {
     return <div>Error loading tickets</div>;
   } 
   return (
@@ -194,8 +261,11 @@ const ManageTickets = ({ onSelectionChange }: ManageTicketsProps) => {
         onPageChange={handlePageChange}
         onRowsPerPageChange={handleRowsPerPageChange}
         totalCount={totalCount}
+        tabName="manageTickets"
+        onSortChange={handleSortChange}
       />
     </div>
   );
 };
+
 export default ManageTickets;

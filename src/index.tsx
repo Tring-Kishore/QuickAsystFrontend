@@ -4,7 +4,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Amplify } from 'aws-amplify';
 import awsConfig from './config/config';
-import client from './apolloclient';
+import client from './client';
 import { ApolloProvider } from '@apollo/client';
 
 Amplify.configure(awsConfig);

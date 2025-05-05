@@ -105,3 +105,19 @@ export interface ListTicket {
   tp_id: string;
   e_date_time_zone: string;
 }
+
+export const UPDATE_TICKET_STATUS = gql`
+  mutation UpdateTicketStatus(
+    $isValid: Boolean, 
+    $ticketPlacementId: [uuid!]!, 
+    $isUndoRequest: Boolean
+  ) {
+    updateTicketStatus(
+      ticketPlacementId: $ticketPlacementId, 
+      isValid: $isValid, 
+      isUndoRequest: $isUndoRequest
+    ) {
+      message
+    }
+  }
+`;
