@@ -30,6 +30,16 @@ export interface SortConfig {
   key: string;
   direction: 'asc' | 'desc';
 }
+const getTicketStatus = (validationStatus: boolean | null): string | null => {
+  if (validationStatus === null) {
+    return null;
+  } else if (validationStatus) {
+    return "Verified";
+  } else {
+    return "Delist";
+  }
+};
+
 
 const useManageTickets = (
   pageSize: number,
@@ -42,9 +52,7 @@ const useManageTickets = (
       pageSize,
       pageOffset,
       search_event: "%",
-      ticketStatus: filters.validationStatus !== null ? 
-        (filters.validationStatus ? "Verified" : "Delist") : 
-        null,
+      ticketStatus: getTicketStatus(filters.validationStatus),
       ticketId: null,
       tpId: null,
       array_tpid: null,
@@ -75,9 +83,9 @@ const useManageTickets = (
         },
       });
       refetch();
-    } catch (error) {
-      console.error("Error updating ticket status:", error);
-      throw error;
+    } catch (err) {
+      console.error("Error updating ticket status:", err);
+      throw err;
     }
   };
 
@@ -186,9 +194,11 @@ const ManageTickets = ({ onSelectionChange, filters }: ManageTicketsProps) => {
           }
           await handleStatusChange(row.tp_id, newValue);
         };
-        let selectValue = value ? "Valid" : (!value ? "Invalid" : "Select");
+        
+        let selectValue = value === null ? "Select" : value ? "Valid" : "Invalid";
         return (
-          <Select className="select-validate"
+          <Select 
+            className="select-validate"
             value={selectValue}
             onChange={handleChange}
             size="small"
