@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
 import { FILTER_UNSOLD_TICKETS_QUERY } from "./delistUnsoldAPI/DelistUnsoldAPI";
 import { CircularProgress } from "@mui/material";
+import { SortConfig } from "../manageTickets/ManageTickets";
 interface FilterUnsoldTicket {
   tp_id: string;
   e_name: string;
@@ -23,11 +24,6 @@ interface DelistUnsoldProps {
     endDate: string | null;
   };
 }
-interface SortConfig {
-  key: string;
-  direction: 'asc' | 'desc';
-}
-
 interface FilterUnsoldTicketsQueryResponse {
   filterUnsoldTickets: FilterUnsoldTicket[];
   filterUnsoldTickets_aggreagate: {

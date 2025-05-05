@@ -5,7 +5,7 @@ import CustomTable, { Column } from "../../../components/customTable/CustomTable
 import { CircularProgress } from "@mui/material";
 import { formatToCDT } from "../../../utils/DateFomatter";
 import { showErrorToast, showSuccessToast } from "../../../components/CustomToast/CustomToast";
-
+import { SortConfig } from "../manageTickets/ManageTickets";
 interface ListTicketsProps {
   filters: {
     leagueId: string | null;
@@ -15,10 +15,7 @@ interface ListTicketsProps {
     endDate: string | null;
   };
 }
-type SortConfig = {
-  key: string;
-  direction: 'asc' | 'desc';
-};
+
 
 const useListTickets = (
   pageSize: number, 

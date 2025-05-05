@@ -13,7 +13,15 @@ import {
 import "./CustomDialogue.scss";
 import DayProgress from "../customProgress/DaysProgress";
 import { GET_LEAGUES } from "./CustomDialogueAPI/CustomDialogueAPI";
-import { formatDate, getEndOfMonth, getLastMonthEnd, getLastMonthStart, getStartOfMonth, getStartOfToday, getStartOfYesterday } from "../../utils/DateFomatter";
+import { 
+  formatDate, 
+  getEndOfMonth, 
+  getLastMonthEnd, 
+  getLastMonthStart, 
+  getStartOfMonth, 
+  getStartOfToday, 
+  getStartOfYesterday 
+} from "../../utils/DateFomatter";
 import CloseIcon from '@mui/icons-material/Close';
 type ValidationStatus = boolean | null;
 type DateRange = 'Today' | 'Yesterday' | 'Last 30 days' | 'This month' | 'Last month' | null;
@@ -21,49 +29,60 @@ type ListStatus = 'List' | 'DelistInProgress' | null;
 type SoldTicketsStatus = 'NotInitiated' | 'Inprogress' | 'Success' | 'Failed' | null;
 type SoldTicketsType = 'Voided_Payout' | 'Unvoided_Payout' | null;
 
+interface Filters {
+  leagueId: string | null;
+  validationStatus: ValidationStatus;
+  dateRange: DateRange;
+  startDate: string | null;
+  endDate: string | null;
+  daysLeft: number | null;
+  listStatus: ListStatus;
+  soldTicketsStatus: SoldTicketsStatus;
+  soldTicketsType: SoldTicketsType;
+}
+
 interface CustomDialogueProps {
   onActiveTabs: number;
-  onApplyFilters: (filters: {
-    leagueId: string | null;
-    validationStatus: ValidationStatus;
-    dateRange: DateRange;
-    startDate: string | null;
-    endDate: string | null;
-    daysLeft: number | null;
-    listStatus: ListStatus;
-    soldTicketsStatus: SoldTicketsStatus;
-    soldTicketsType: SoldTicketsType;
-  }) => void;
+  onApplyFilters: (filters: Filters) => void;
   onClose?: () => void;
 }
 
 const CustomDialogue = ({ onActiveTabs, onApplyFilters, onClose }: CustomDialogueProps) => {
-  const [validationStatus, setValidationStatus] = useState<ValidationStatus>(null);
-  const [selectedDate, setSelectedDate] = useState<DateRange>(null);
-  const [selectedLeague, setSelectedLeague] = useState<string>("");
-  const [daysLeft, setDaysLeft] = useState<number | null>(null);
-  const [listStatus, setListStatus] = useState<ListStatus>(null);
-  const [soldTicketsStatus, setSoldTicketsStatus] = useState<SoldTicketsStatus>(null);
-  const [soldTicketsType, setSoldTicketsType] = useState<SoldTicketsType>(null);
-  const [dateRange, setDateRange] = useState<{ startDate: string | null; endDate: string | null }>({ startDate: null, endDate: null });
+
+  const [filters, setFilters] = useState<Filters>({
+    leagueId: null,
+    validationStatus: null,
+    dateRange: null,
+    startDate: null,
+    endDate: null,
+    daysLeft: null,
+    listStatus: null,
+    soldTicketsStatus: null,
+    soldTicketsType: null,
+  });
+
+  const { loading, error, data } = useQuery(GET_LEAGUES);
+  const dateOptions: DateRange[] = ["Today", "Yesterday", "Last 30 days", "This month", "Last month"];
 
   const handleReset = () => {
-    setValidationStatus(null);
-    setSelectedDate(null);
-    setSelectedLeague("");
-    setDateRange({ startDate: null, endDate: null });
-    setDaysLeft(null);
-    setListStatus(null);
-    setSoldTicketsStatus(null);
-    setSoldTicketsType(null);
+    setFilters({
+      leagueId: null,
+      validationStatus: null,
+      dateRange: null,
+      startDate: null,
+      endDate: null,
+      daysLeft: null,
+      listStatus: null,
+      soldTicketsStatus: null,
+      soldTicketsType: null,
+    });
   };
 
   const handleApply = () => {
-    let startDate = null;
-    let endDate = null;
+    let { startDate, endDate } = filters;
 
-    if (selectedDate) {
-      switch (selectedDate) {
+    if (filters.dateRange) {
+      switch (filters.dateRange) {
         case "Today":
           startDate = formatDate(getStartOfToday());
           endDate = null;
@@ -86,81 +105,65 @@ const CustomDialogue = ({ onActiveTabs, onApplyFilters, onClose }: CustomDialogu
           startDate = formatDate(getLastMonthStart());
           endDate = formatDate(getLastMonthEnd());
           break;
-        default:
-          break;
       }
     }
 
-    onApplyFilters({
-      leagueId: selectedLeague || null,
-      validationStatus: onActiveTabs === 0 ? validationStatus : null,
-      dateRange: selectedDate,
+    const filtersToApply: Filters = {
+      ...filters,
       startDate,
       endDate,
-      daysLeft: onActiveTabs === 0 ? daysLeft : null,
-      listStatus: onActiveTabs === 1 ? listStatus : null,
-      soldTicketsStatus: onActiveTabs === 2 ? soldTicketsStatus : null,
-      soldTicketsType: onActiveTabs === 2 ? soldTicketsType : null,
-    });
-  };
+      validationStatus: onActiveTabs === 0 ? filters.validationStatus : null,
+      daysLeft: onActiveTabs === 0 ? filters.daysLeft : null,
+      listStatus: onActiveTabs === 1 ? filters.listStatus : null,
+      soldTicketsStatus: onActiveTabs === 2 ? filters.soldTicketsStatus : null,
+      soldTicketsType: onActiveTabs === 2 ? filters.soldTicketsType : null,
+    };
 
-  const { loading, error, data } = useQuery(GET_LEAGUES);
+    onApplyFilters(filtersToApply);
+  };
 
   const handleValidationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    let newValue: ValidationStatus = null;
-    if (value === 'true') {
-      newValue = true;
-    } else if (value === 'false') {
-      newValue = false;
-    }
-    setValidationStatus(newValue);
+    setFilters(prev => ({
+      ...prev,
+      validationStatus: value === 'true' ? true : value === 'false' ? false : null
+    }));
   };
 
   const handleListStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    let newValue: ListStatus = null;
-    if (value === 'List') {
-      newValue = 'List';
-    } else if (value === 'DelistInProgress') {
-      newValue = 'DelistInProgress';
-    }
-    setListStatus(newValue);
+    setFilters(prev => ({
+      ...prev,
+      listStatus: value === 'List' ? 'List' : value === 'DelistInProgress' ? 'DelistInProgress' : null
+    }));
   };
 
   const handleSoldTicketsStatus = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    let newValue: SoldTicketsStatus = null;
-    let newTypeValue: SoldTicketsType = null;
-    if (value === 'NotInitiated') {
-      newValue = 'NotInitiated';
-      newTypeValue = 'Unvoided_Payout';
-    } else if (value === 'Inprogress') {
-      newValue = 'Inprogress';
-      newTypeValue = 'Unvoided_Payout';
-    } else if (value === 'Success') {
-      newValue = 'Success';
-      newTypeValue = 'Unvoided_Payout';
-    } else if (value === 'Failed') {
-      newValue = 'Failed';
-      newTypeValue = 'Unvoided_Payout';
-    } else if (value === 'Voided_Payout') {
-      newValue = null;
-      newTypeValue = 'Voided_Payout';
-    }
-    setSoldTicketsStatus(newValue);
-    setSoldTicketsType(newTypeValue);
+    setFilters(prev => ({
+      ...prev,
+      soldTicketsStatus: ['NotInitiated', 'Inprogress', 'Success', 'Failed'].includes(value) 
+        ? value as SoldTicketsStatus 
+        : null,
+      soldTicketsType: value === 'Voided_Payout' 
+        ? 'Voided_Payout' 
+        : ['NotInitiated', 'Inprogress', 'Success', 'Failed'].includes(value)
+          ? 'Unvoided_Payout'
+          : null
+    }));
   };
 
   const handleDateChange = (dateOption: DateRange) => {
-    setSelectedDate(dateOption);
+    setFilters(prev => ({ ...prev, dateRange: dateOption }));
   };
 
   const handleLeagueChange = (event: SelectChangeEvent) => {
-    setSelectedLeague(event.target.value);
+    setFilters(prev => ({ ...prev, leagueId: event.target.value || null }));
   };
 
-  const dateOptions: DateRange[] = ["Today", "Yesterday", "Last 30 days", "This month", "Last month"];
+  const handleDaysLeftChange = (value: number | null) => {
+    setFilters(prev => ({ ...prev, daysLeft: value }));
+  };
 
   return (
     <div className="custom-dialogue-outer-class">
@@ -173,7 +176,13 @@ const CustomDialogue = ({ onActiveTabs, onApplyFilters, onClose }: CustomDialogu
       <div className="custom-dialogue-content">
         <div className="custom-dialogue-event">
           <p>Event</p>
-          <Select value={selectedLeague} onChange={handleLeagueChange} size="small" displayEmpty fullWidth>
+          <Select 
+            value={filters.leagueId || ''} 
+            onChange={handleLeagueChange} 
+            size="small" 
+            displayEmpty 
+            fullWidth
+          >
             <MenuItem value="" disabled>
               {loading ? "Loading leagues..." : "Select a league"}
             </MenuItem>
@@ -194,7 +203,7 @@ const CustomDialogue = ({ onActiveTabs, onApplyFilters, onClose }: CustomDialogu
                 row
                 aria-label="validation"
                 name="validation-radio-group"
-                value={validationStatus}
+                value={String(filters.validationStatus)}
                 onChange={handleValidationChange}
               >
                 <FormControlLabel value="true" control={<Radio color="primary" />} label="Valid" />
@@ -208,7 +217,13 @@ const CustomDialogue = ({ onActiveTabs, onApplyFilters, onClose }: CustomDialogu
           <div className="custom-dialog-validate">
             <p>Status</p>
             <FormControl component="fieldset">
-              <RadioGroup row aria-label="list-status" name="list-status-radio-group" value={listStatus} onChange={handleListStatus}>
+              <RadioGroup 
+                row 
+                aria-label="list-status" 
+                name="list-status-radio-group" 
+                value={filters.listStatus || ''} 
+                onChange={handleListStatus}
+              >
                 <FormControlLabel value="List" control={<Radio color="primary" />} label="Listed" />
                 <FormControlLabel value="DelistInProgress" control={<Radio color="primary" />} label="Delist requested" />
               </RadioGroup>
@@ -220,7 +235,13 @@ const CustomDialogue = ({ onActiveTabs, onApplyFilters, onClose }: CustomDialogu
           <div className="custom-dialog-validate">
             <p>Status</p>
             <FormControl component="fieldset">
-              <RadioGroup row aria-label="sold-tickets-status" name="sold-tickets-status-radio-group" value={soldTicketsStatus || soldTicketsType || ""} onChange={handleSoldTicketsStatus}>
+              <RadioGroup 
+                row 
+                aria-label="sold-tickets-status" 
+                name="sold-tickets-status-radio-group" 
+                value={filters.soldTicketsStatus || filters.soldTicketsType || ''} 
+                onChange={handleSoldTicketsStatus}
+              >
                 <FormControlLabel value="NotInitiated" control={<Radio color="primary" />} label="Sold" />
                 <FormControlLabel value="Inprogress" control={<Radio color="primary" />} label="In Progress" />
                 <FormControlLabel value="Success" control={<Radio color="primary" />} label="Settled" />
@@ -237,7 +258,7 @@ const CustomDialogue = ({ onActiveTabs, onApplyFilters, onClose }: CustomDialogu
             {dateOptions.map((option) => (
               <div key={option} className="date-option" onClick={() => handleDateChange(option)}>
                 <span>{option}</span>
-                <Checkbox checked={selectedDate === option} color="primary" size="small" />
+                <Checkbox checked={filters.dateRange === option} color="primary" size="small" />
               </div>
             ))}
           </div>
@@ -246,7 +267,7 @@ const CustomDialogue = ({ onActiveTabs, onApplyFilters, onClose }: CustomDialogu
         {onActiveTabs === 0 && (
           <div className="custom-dialogue-period-left">
             <p>Period Left</p>
-            <DayProgress value={daysLeft} onChange={setDaysLeft} />
+            <DayProgress value={filters.daysLeft} onChange={handleDaysLeftChange} />
           </div>
         )}
 

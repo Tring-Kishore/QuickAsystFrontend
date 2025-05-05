@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { FILTER_SOLD_TICKETS } from './soldTicketsAPI/SoldTicketsAPI';
 import CustomTable, { Column } from '../../../components/customTable/CustomTable';
 import { CircularProgress, Chip } from '@mui/material';
-
+import { SortConfig } from '../manageTickets/ManageTickets';
 interface FilterSoldTickets {
   tp_id: string;
   e_name: string;
@@ -34,10 +34,7 @@ interface SoldTicketsProps {
   };
 }
 
-interface SortConfig {
-  key: string;
-  direction: 'asc' | 'desc';
-}
+
 
 const SoldTickets = ({ filters }: SoldTicketsProps) => {
   const [page, setPage] = useState<number>(1);

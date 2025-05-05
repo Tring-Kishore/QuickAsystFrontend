@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
 import { FILTER_RETURN_TICKETS_QUERY } from "./delistReturnAPI/DelistReturnAPI";
 import { CircularProgress } from "@mui/material";
+import { SortConfig } from "../manageTickets/ManageTickets";
 interface FilterReturnTicket {
   tp_id: string;
   e_name: string;
@@ -22,10 +23,7 @@ interface DelistReturnProps {
     endDate: string | null;
   };
 }
-interface SortConfig {
-  key: string;
-  direction: 'asc' | 'desc';
-}
+
 interface FilterReturnTicketsQueryResponse {
   filterreturntickets: FilterReturnTicket[];
   filterreturntickets_aggregate: {
