@@ -27,17 +27,17 @@ const Account = () => {
 
   useEffect(() => {
     if (data?.get_user_profile?.[0]) {
-      const user = data.get_user_profile;
+      const user = data.get_user_profile[0];
       setFormData({
-        firstName: user[0].u_first_name || "",
-        lastName: user[0].u_last_name || "",
-        phoneNumber: user[0].u_phone_number || "",
-        email: user[0].u_email_id || "",
-        avatarUrl: user[0].u_avatar_url || ""
+        firstName: user.u_first_name || "",
+        lastName: user.u_last_name || "",
+        phoneNumber: user.u_phone_number || "",
+        email: user.u_email_id || "",
+        avatarUrl: user.u_avatar_url || ""
       });
       
-      const imageKey = user[0].u_avatar_url;
-      console.log('the imag url is ',user[0].u_avatar_url);
+      const imageKey = user.u_avatar_url;
+      console.log('the imag url is ',user.u_avatar_url);
 
       if (imageKey) {
         if (imageKey.startsWith('http')) {
