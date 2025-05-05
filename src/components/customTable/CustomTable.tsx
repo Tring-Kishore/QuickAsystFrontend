@@ -16,7 +16,6 @@ import {
   Typography,
   SelectChangeEvent,
   Dialog,
-  dividerClasses,
 } from "@mui/material";
 import "./CustomTable.scss";
 import SortIcon from "../../assets/images/Sort.svg";
@@ -29,6 +28,7 @@ import InvoiceIcon from '../../assets/images/InvoiceIcon.svg';
 import { UPDATE_TP_PAYOUT_STATUS } from "../dialoguesInvoice/DialogueInvoiceAPI/DialogueInvoiceAPI";
 import { useMutation } from "@apollo/client";
 import { showErrorToast, showSuccessToast } from "../CustomToast/CustomToast";
+
 export interface Column<T = any> {
   id: Extract<keyof T, string>;
   label: string | any;
@@ -48,9 +48,18 @@ interface ReusableTableProps<T> {
   totalCount?: number;
   hideCheckbox?: boolean;
   hideActions?: boolean;
-  tabName?: string;
-  onDelistClick?:(ticketPlacementId:string) => void;
+  tabName?: 'manageTickets' | 'listTickets' | 'soldTickets' | string;
+  onDelistClick?: (ticketPlacementId: string) => void;
   onSortChange?: (sortBy: string, sortDirection: 'asc' | 'desc') => void;
+}
+
+type TabName = 'manageTickets' | 'listTickets' | 'soldTickets';
+
+type DialogType = 'publish' | 'sold' | 'editpublish' | 'editlisttickets' | 'invoice';
+
+interface SortConfig {
+  key: string;
+  direction: 'asc' | 'desc';
 }
 
 const CustomTable = <T,>({
@@ -73,13 +82,11 @@ const CustomTable = <T,>({
   const [open, setOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<any>(null);
   const isAllSelected = data.length > 0 && selected.length === data.length;
-  const currentTabName = tabName;
-  const [dialogType, setDialogType] = useState<'publish' | 'sold' | 'editpublish' | 'editlisttickets' | 'invoice'>('publish');
-  const [sortConfig, setSortConfig] = useState<{
-    key: string;
-    direction: 'asc' | 'desc';
-  }>({ key: 'tp_updated_at', direction: 'desc' });
+  const currentTabName: TabName = tabName as TabName;
+  const [dialogType, setDialogType] = useState<DialogType>('publish');
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'tp_updated_at', direction: 'desc' });
   const [updatePayoutStatus] = useMutation(UPDATE_TP_PAYOUT_STATUS);
+
   const handleSort = (columnId: string) => {
     let direction: 'asc' | 'desc' = 'asc';
     
@@ -93,6 +100,7 @@ const CustomTable = <T,>({
     setSortConfig({ key: sortKey, direction });
     onSortChange?.(sortKey, direction);
   };
+
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       const allIds = data.map((row) => getRowId(row));
@@ -132,7 +140,7 @@ const CustomTable = <T,>({
 
   const totalPages = Math.ceil(totalCount / rowsPerPage);
 
-  const handleEditPublish = (row : any) => {
+  const handleEditPublish = (row: any) => {
     setSelectedTicket(row);
     setDialogType('editpublish');
     setOpen(true);
@@ -150,7 +158,7 @@ const CustomTable = <T,>({
     setOpen(true);
   };
 
-  const handleEditListTickets = (row:any) => {
+  const handleEditListTickets = (row: any) => {
     setSelectedTicket(row);
     setDialogType('editlisttickets');
     setOpen(true);
@@ -211,7 +219,8 @@ const CustomTable = <T,>({
                   {currentTabName === 'soldTickets' ? 'Sold Price' : 'Action'}</TableCell>
               )}
             </TableRow>
-          </TableHead><TableBody>
+          </TableHead>
+          <TableBody>
             {data.map((row: any) => {
               const rowId = getRowId(row);
               const isChecked = selected.includes(rowId);
@@ -334,47 +343,46 @@ const CustomTable = <T,>({
       {totalCount <= 0 ? (
         <div className="record-not-found">Record Not Found</div>
       ) : (
+        <Box className="pagination-container">
+          <Box className="rows-per-page-control">
+            <Typography variant="body2" className="rows-per-page-label">
+              Show:
+            </Typography>
+            <FormControl size="small" variant="standard">
+              <Select
+                value={rowsPerPage}
+                onChange={handleRowsPerPageChange}
+                disableUnderline
+              >
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={20}>20</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
 
-      <Box className="pagination-container">
-        <Box className="rows-per-page-control">
-          <Typography variant="body2" className="rows-per-page-label">
-            Show:
-          </Typography>
-          <FormControl size="small" variant="standard">
-            <Select
-              value={rowsPerPage}
-              onChange={handleRowsPerPageChange}
-              disableUnderline
-            >
-              <MenuItem value={5}>5</MenuItem>
-              <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={20}>20</MenuItem>
-            </Select>
-          </FormControl>
+          <Pagination
+            count={totalPages}
+            page={page}
+            onChange={handlePageChange}
+            shape="rounded"
+            className="custom-pagination"
+          />
         </Box>
-
-        <Pagination
-          count={totalPages}
-          page={page}
-          onChange={handlePageChange}
-          shape="rounded"
-          className="custom-pagination"
-        />
-      </Box>
       )}
 
       <Dialog
-  open={open}
-  onClose={() => setOpen(false)}
-  maxWidth="sm"
-  fullWidth
->
-  <DialogueInvoice
-    ticketData={selectedTicket}
-    onClose={() => setOpen(false)}
-    dialogType={dialogType}
-  />
-</Dialog>
+        open={open}
+        onClose={() => setOpen(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogueInvoice
+          ticketData={selectedTicket}
+          onClose={() => setOpen(false)}
+          dialogType={dialogType}
+        />
+      </Dialog>
     </>
   );
 };

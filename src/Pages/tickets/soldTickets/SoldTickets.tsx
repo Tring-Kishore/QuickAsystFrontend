@@ -1,9 +1,8 @@
 import { useQuery } from '@apollo/client';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import { FILTER_SOLD_TICKETS } from './soldTicketsAPI/SoldTicketsAPI';
 import CustomTable, { Column } from '../../../components/customTable/CustomTable';
-import { CircularProgress } from '@mui/material';
-import { Chip } from '@mui/material';
+import { CircularProgress, Chip } from '@mui/material';
 
 interface FilterSoldTickets {
   tp_id: string;
@@ -35,13 +34,18 @@ interface SoldTicketsProps {
   };
 }
 
+interface SortConfig {
+  key: string;
+  direction: 'asc' | 'desc';
+}
+
 const SoldTickets = ({ filters }: SoldTicketsProps) => {
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [sortConfig, setSortConfig] = useState<{
-    key: string;
-    direction: 'asc' | 'desc';
-  }>({ key: 'tp_updated_at', direction: 'desc' });
+  const [page, setPage] = useState<number>(1);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    key: 'tp_updated_at',
+    direction: 'desc',
+  });
 
   const handleSortChange = (sortBy: string, sortDirection: 'asc' | 'desc') => {
     setSortConfig({ key: sortBy, direction: sortDirection });
@@ -53,7 +57,7 @@ const SoldTickets = ({ filters }: SoldTicketsProps) => {
       pageOffset: (page - 1) * rowsPerPage,
       order_by: [
         { [sortConfig.key]: sortConfig.direction },
-        { tp_id: 'asc' }
+        { tp_id: 'asc' },
       ],
       array_tpid: null,
       enddate: filters.endDate || null,
@@ -63,7 +67,7 @@ const SoldTickets = ({ filters }: SoldTicketsProps) => {
       search_event: "%",
       startdate: filters.startDate || null,
       ticketId: null,
-      ticketPlacementId: null
+      ticketPlacementId: null,
     },
     fetchPolicy: 'network-only',
   });
@@ -86,7 +90,7 @@ const SoldTickets = ({ filters }: SoldTicketsProps) => {
     { id: 'e_date', label: 'Date', className: 'column-date' },
     { id: 'e_address', label: 'venue', className: 'column-venue' },
     {
-      id: "tp_section",
+      id: 'tp_section',
       label: (
         <div className="ticket-placement-header">
           <div className="main-header">Ticket Placement</div>
@@ -104,7 +108,7 @@ const SoldTickets = ({ filters }: SoldTicketsProps) => {
           <span>{row.tp_seat_no}</span>
         </div>
       ),
-      className: 'column-ticket-placement'
+      className: 'column-ticket-placement',
     },
     {
       id: 'tp_payment_status',
@@ -112,19 +116,18 @@ const SoldTickets = ({ filters }: SoldTicketsProps) => {
       format: (value, row) => {
         let status = value || 'Sold';
         let chipColor: 'default' | 'error' | 'success' | 'warning' = 'default';
-        
+
         if (row.tp_payout_status === 'Voided_Payout') {
           status = 'Voided Payout';
           chipColor = 'warning';
-        } 
-        else {
+        } else {
           switch (status.toLowerCase()) {
             case 'failed':
               chipColor = 'error';
               break;
             case 'success':
               chipColor = 'success';
-              status = 'Settled'
+              status = 'Settled';
               break;
             case 'sold':
               chipColor = 'success';
@@ -132,40 +135,40 @@ const SoldTickets = ({ filters }: SoldTicketsProps) => {
               break;
             case 'inprogress':
               chipColor = 'warning';
-              status = 'Settlement In Progress'
+              status = 'Settlement In Progress';
               break;
             case 'settled':
               chipColor = 'success';
-              status = 'Settled'
+              status = 'Settled';
               break;
             default:
               chipColor = 'default';
           }
         }
-        
+
         return (
-          <Chip 
-            label={status} 
+          <Chip
+            label={status}
             color={chipColor}
             variant="outlined"
             size="small"
           />
         );
-      }
+      },
     },
     { id: 'u_full_name', label: 'User Name', className: 'column-user-name' },
     { id: 'u_email_id', label: 'Email' },
   ];
 
   if (loading) {
-    return <div className="circular-progress"><CircularProgress /></div>
+    return <div className="circular-progress"><CircularProgress /></div>;
   }
   if (error) {
-    return <div>Error...</div>
+    return <div>Error...</div>;
   }
-  
+
   const totalCount = data?.FilterSoldTickets_aggregate?.aggregate?.count || 0;
-  
+
   return (
     <div className="manageTicket-fullheight">
       <CustomTable
@@ -178,11 +181,11 @@ const SoldTickets = ({ filters }: SoldTicketsProps) => {
         onRowsPerPageChange={handleRowsPerPageChange}
         totalCount={totalCount || 0}
         hideCheckbox={true}
-        tabName='soldTickets'
+        tabName="soldTickets"
         onSortChange={handleSortChange}
       />
     </div>
-  )
-}
+  );
+};
 
-export default SoldTickets
+export default SoldTickets;

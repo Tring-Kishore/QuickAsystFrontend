@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
@@ -23,50 +22,68 @@ interface DelistReturnProps {
     endDate: string | null;
   };
 }
+interface SortConfig {
+  key: string;
+  direction: 'asc' | 'desc';
+}
+interface FilterReturnTicketsQueryResponse {
+  filterreturntickets: FilterReturnTicket[];
+  filterreturntickets_aggregate: {
+    aggregate: {
+      count: number;
+    };
+  };
+}
+
 const DelistReturn: React.FC<DelistReturnProps> = ({ filters }) => {
-  const [page, setPage] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [sortConfig, setSortConfig] = useState<{
-        key: string;
-        direction: 'asc' | 'desc';
-      }>({ key: 'tp_updated_at', direction: 'desc' });
-    
-      const handleSortChange = (sortBy: string, sortDirection: 'asc' | 'desc') => {
-        setSortConfig({ key: sortBy, direction: sortDirection });
-      };
-  const { data, loading, error , refetch } = useQuery(FILTER_RETURN_TICKETS_QUERY, {
-    variables: {
-      enddate: filters.endDate || null,
-      startdate: filters.startDate || null,
-      leagueId: filters.leagueId || null,
-      ticketId: null,
-      ticketPlacementId: null,
-      array_tpid: null,
-      pageSize: rowsPerPage,
-      pageOffset: (page - 1) * rowsPerPage,
-      order_by: [
-        { [sortConfig.key]: sortConfig.direction },
-        { tp_id: 'asc' }
-      ],
-      search_event: "%",
-      ticketStatus: null
-    },
-    fetchPolicy: "network-only",
-  });
+  const [page, setPage] = useState<number>(1);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'tp_updated_at', direction: 'desc' });
+
+  const handleSortChange = (sortBy: string, sortDirection: 'asc' | 'desc') => {
+    setSortConfig({ key: sortBy, direction: sortDirection });
+  };
+
+  const { data, loading, error, refetch } = useQuery<FilterReturnTicketsQueryResponse>(
+    FILTER_RETURN_TICKETS_QUERY,
+    {
+      variables: {
+        enddate: filters.endDate || null,
+        startdate: filters.startDate || null,
+        leagueId: filters.leagueId || null,
+        ticketId: null,
+        ticketPlacementId: null,
+        array_tpid: null,
+        pageSize: rowsPerPage,
+        pageOffset: (page - 1) * rowsPerPage,
+        order_by: [
+          { [sortConfig.key]: sortConfig.direction },
+          { tp_id: 'asc' }
+        ],
+        search_event: "%",
+        ticketStatus: null
+      },
+      fetchPolicy: "network-only",
+    }
+  );
+
   useEffect(() => {
     refetch();
   }, [filters, refetch]);
+
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
   };
+
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(1);
   };
+
   const columns: Column<FilterReturnTicket>[] = [
-    { id: "e_name", label: "Events", className:'column-events' },
-    { id: "e_date", label: "Date", className:'column-date' },
-    { id: "e_address", label: "Venue", className:'column-venue' },
+    { id: "e_name", label: "Events", className: 'column-events' },
+    { id: "e_date", label: "Date", className: 'column-date' },
+    { id: "e_address", label: "Venue", className: 'column-venue' },
     {
       id: "tp_section",
       label: (
@@ -86,17 +103,24 @@ const DelistReturn: React.FC<DelistReturnProps> = ({ filters }) => {
           <span>{row.tp_seat_no}</span>
         </div>
       ),
-      className:'column-ticket-placement'
+      className: 'column-ticket-placement',
     },
-    { id: "u_full_name", label: "User Name", className:'column-user-name' },
+    { id: "u_full_name", label: "User Name", className: 'column-user-name' },
     { id: "u_email_id", label: "Email" },
   ];
-  if (loading){
-    return <div className="circular-progress"><CircularProgress/></div>
-  } 
-  if (error){
+
+  if (loading) {
+    return (
+      <div className="circular-progress">
+        <CircularProgress />
+      </div>
+    );
+  }
+
+  if (error) {
     return <div>Error loading tickets</div>;
-  } 
+  }
+
   return (
     <div className="manageTicket-fullheight">
       <CustomTable
@@ -115,4 +139,5 @@ const DelistReturn: React.FC<DelistReturnProps> = ({ filters }) => {
     </div>
   );
 };
+
 export default DelistReturn;

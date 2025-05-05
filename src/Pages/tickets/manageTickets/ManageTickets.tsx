@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { Chip, MenuItem, Select } from "@mui/material";
 import CustomTable, { Column } from "../../../components/customTable/CustomTable";
@@ -12,23 +12,30 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { calculateDaysLeft, formatToCDT } from "../../../utils/DateFomatter";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
+interface Filters {
+  leagueId: string | null;
+  validationStatus: boolean | null;
+  dateRange: string | null;
+  startDate: string | null;
+  endDate: string | null;
+  daysLeft: number | null;
+}
+
 interface ManageTicketsProps {
   onSelectionChange: (selectedIds: string[]) => void;
-  filters: {
-    leagueId: string | null;
-    validationStatus: boolean | null;
-    dateRange: string | null;
-    startDate: string | null;
-    endDate: string | null;
-    daysLeft: number | null;
-  };
+  filters: Filters;
+}
+
+interface SortConfig {
+  key: string;
+  direction: 'asc' | 'desc';
 }
 
 const useManageTickets = (
-  pageSize: number, 
-  pageOffset: number, 
-  filters: ManageTicketsProps['filters'],
-  orderBy: any 
+  pageSize: number,
+  pageOffset: number,
+  filters: Filters,
+  orderBy: { [key: string]: string | 'asc' | 'desc' }[]
 ) => {
   const { loading, error, data, refetch } = useQuery(GET_MANAGE_TICKETS, {
     variables: {
@@ -85,12 +92,12 @@ const useManageTickets = (
 };
 
 const ManageTickets = ({ onSelectionChange, filters }: ManageTicketsProps) => {
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [sortConfig, setSortConfig] = useState<{
-    key: string;
-    direction: 'asc' | 'desc';
-  }>({ key: 'tp_updated_at', direction: 'desc' });
+  const [page, setPage] = useState<number>(1);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    key: 'tp_updated_at',
+    direction: 'desc',
+  });
 
   const handleSortChange = (sortBy: string, sortDirection: 'asc' | 'desc') => {
     setSortConfig({ key: sortBy, direction: sortDirection });
@@ -179,13 +186,7 @@ const ManageTickets = ({ onSelectionChange, filters }: ManageTicketsProps) => {
           }
           await handleStatusChange(row.tp_id, newValue);
         };
-        let selectValue = "Select";
-        if (value === true) {
-          selectValue = "Valid";
-        } 
-        if (value === false) {
-          selectValue = "Invalid";
-        } 
+        let selectValue = value ? "Valid" : (!value ? "Invalid" : "Select");
         return (
           <Select className="select-validate"
             value={selectValue}
@@ -231,7 +232,7 @@ const ManageTickets = ({ onSelectionChange, filters }: ManageTicketsProps) => {
       className: 'column-period-left'
     }
   ];
-  
+
   if (loading) {
     return <div className="circular-progress"><CircularProgress /></div>;
   } 

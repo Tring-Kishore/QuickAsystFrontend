@@ -5,6 +5,7 @@ import CustomTable, { Column } from "../../../components/customTable/CustomTable
 import { CircularProgress } from "@mui/material";
 import { formatToCDT } from "../../../utils/DateFomatter";
 import { showErrorToast, showSuccessToast } from "../../../components/CustomToast/CustomToast";
+
 interface ListTicketsProps {
   filters: {
     leagueId: string | null;
@@ -14,7 +15,17 @@ interface ListTicketsProps {
     endDate: string | null;
   };
 }
-const useListTickets = (pageSize: number, pageOffset: number,filters: ListTicketsProps['filters'],orderBy:any) => {
+type SortConfig = {
+  key: string;
+  direction: 'asc' | 'desc';
+};
+
+const useListTickets = (
+  pageSize: number, 
+  pageOffset: number, 
+  filters: ListTicketsProps['filters'], 
+  orderBy: any
+) => {
   const { loading, error, data, refetch } = useQuery(GET_LIST_TICKETS, {
     variables: {
       pageSize,
@@ -27,56 +38,59 @@ const useListTickets = (pageSize: number, pageOffset: number,filters: ListTicket
       enddate: filters.endDate || null,
       leagueId: filters.leagueId || null,
       startdate: filters.startDate || null,
-      order_by:orderBy
+      order_by: orderBy,
     },
     fetchPolicy: "network-only",
   });
+
   useEffect(() => {
-      refetch();
-    }, [filters, refetch]);
+    refetch();
+  }, [filters, refetch]);
+
   const tickets: ListTicket[] = data?.filterlisttickets || [];
   const totalCount: number = data?.filterlisttickets_aggregate?.aggregate?.count || 0;
 
   return { loading, error, tickets, totalCount, refetch };
 };
-const ListTickets = ({filters} : ListTicketsProps) => {
-  const [page, setPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+const ListTickets = ({ filters }: ListTicketsProps) => {
+  const [page, setPage] = useState<number>(1);
+  const [rowsPerPage, setRowsPerPage] = useState<number>(10);
   const [updateTicketStatus] = useMutation(UPDATE_TICKET_STATUS);
-  const [sortConfig, setSortConfig] = useState<{
-      key: string;
-      direction: 'asc' | 'desc';
-    }>({ key: 'tp_updated_at', direction: 'desc' });
-  
-    const handleSortChange = (sortBy: string, sortDirection: 'asc' | 'desc') => {
-      setSortConfig({ key: sortBy, direction: sortDirection });
-    };
-  const { loading, error, tickets, totalCount , refetch } = useListTickets(
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'tp_updated_at', direction: 'desc' });
+
+  const handleSortChange = (sortBy: string, sortDirection: 'asc' | 'desc') => {
+    setSortConfig({ key: sortBy, direction: sortDirection });
+  };
+
+  const { loading, error, tickets, totalCount, refetch } = useListTickets(
     rowsPerPage,
     (page - 1) * rowsPerPage,
     filters,
     [
       { [sortConfig.key]: sortConfig.direction },
-      { tp_id: 'asc' }
+      { tp_id: 'asc' },
     ]
   );
+
   const handlePageChange = (newPage: number) => setPage(newPage);
+
   const handleRowsPerPageChange = (newRowsPerPage: number) => {
     setRowsPerPage(newRowsPerPage);
     setPage(1);
   };
+
   const handleDelistClick = async (ticketPlacementId: string) => {
     try {
       const { data } = await updateTicketStatus({
         variables: {
           ticketPlacementId: [ticketPlacementId],
           isValid: false,
-          isUndoRequest: false
-        }
+          isUndoRequest: false,
+        },
       });
 
       if (data?.updateTicketStatus?.message) {
-        console.log("Ticket delisted successfully:", data.updateTicketStatus.message);
         showSuccessToast(data.updateTicketStatus.message);
         await refetch();
       }
@@ -84,18 +98,17 @@ const ListTickets = ({filters} : ListTicketsProps) => {
       console.error("Error delisting ticket:", err);
       showErrorToast("Error in updating delist");
     }
-    
   };
-  
+
   const columns: Column<ListTicket>[] = [
-    { id: "e_name", label: "Event",className:'column-events' },
+    { id: "e_name", label: "Event", className: "column-events" },
     {
-          id: "e_date",
-          label: "Date",
-          format: (value) => `${formatToCDT(value)} CDT`,
-          className:'column-date',
-        },
-    { id: "e_address", label: "Venue",className:'column-venue' },
+      id: "e_date",
+      label: "Date",
+      format: (value) => `${formatToCDT(value)} CDT`,
+      className: "column-date",
+    },
+    { id: "e_address", label: "Venue", className: "column-venue" },
     {
       id: "tp_section",
       label: (
@@ -115,19 +128,26 @@ const ListTickets = ({filters} : ListTicketsProps) => {
           <span>{row.tp_seat_no}</span>
         </div>
       ),
-      className:'column-ticket-placement',
+      className: "column-ticket-placement",
     },
-    {id:'tp_status',label:'Status',className:'column-status'},
-    { id: "u_full_name", label: "User Name",className:'column-user-name' },
+    { id: "tp_status", label: "Status", className: "column-status" },
+    { id: "u_full_name", label: "User Name", className: "column-user-name" },
     { id: "u_email_id", label: "Email" },
     { id: "tp_list_price", label: "Price" },
   ];
-  if (loading){
-    return <div className="circular-progress"><CircularProgress/></div>
-  } 
-  if (error){
+
+  if (loading) {
+    return (
+      <div className="circular-progress">
+        <CircularProgress />
+      </div>
+    );
+  }
+
+  if (error) {
     return <div>Error loading list tickets.</div>;
-  } 
+  }
+
   return (
     <div className="manageTicket-fullheight">
       <CustomTable
@@ -147,4 +167,5 @@ const ListTickets = ({filters} : ListTicketsProps) => {
     </div>
   );
 };
+
 export default ListTickets;
